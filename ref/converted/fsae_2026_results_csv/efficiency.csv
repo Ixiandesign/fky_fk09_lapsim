@@ -1,0 +1,60 @@
+Place,CarNum,Team,AvgLaptime,LapsCompleted,FuelUsed_L,AdjCO2_kg,AvgAdjCO2PerLap_kg,FuelType,FuelEffFactor,FuelEffScore
+1,1,Universidad Politecnica de Valencia,147.884,10,4.092,6.751,0.6751,E85,0.839,100
+2,118,Univ of Calif - Berkeley,153.755,10,4.902,8.088,0.7353,E85,0.741,81.5
+3,83,Vanderbilt Univ,193.998,6,1.531,3.536,0.5893,93,0.732,80.0
+4,11,Escola de Engenharia de Sao Carlos,171.965,10,4.271,7.047,0.7047,E85,0.691,72.2
+5,101,Hope College,174.705,10,3.091,7.140,0.7140,93,0.671,68.5
+6,107,University of Bologna,160.004,10,3.491,8.064,0.8064,100,0.649,64.3
+7,76,Univ of Wisconsin - Platteville,156.771,10,5.132,8.467,0.8467,E85,0.631,60.9
+8,122,Drexel Univ,203.080,10,3.766,6.213,0.6903,E85,0.597,54.5
+9,3,Georgia Institute of Technology,146.189,10,4.162,9.614,0.9614,93,0.596,54.3
+10,4,Kansas State Univ,144.010,10,6.002,9.903,0.9903,E85,0.587,52.6
+11,89,Univ of Manitoba,176.055,10,3.521,8.133,0.8133,93,0.585,52.2
+12,42,South Dakota State Univ,176.908,10,5.023,8.287,0.8287,E85,0.571,49.6
+13,87,Michigan Tech Univ,176.172,10,4.035,9.320,0.8473,100,0.561,47.7
+14,120,Univ of Cincinnati,171.251,10,4.179,9.653,0.8775,100,0.557,47.0
+15,121,Wayne State Univ,178.141,10,3.676,8.491,0.8491,93,0.554,46.3
+16,88,Univ of Texas - Austin,190.867,10,3.444,7.955,0.7955,93,0.551,45.9
+17,91,California State Univ - Northridge,187.283,10,3.896,8.999,0.8181,100,0.547,45.0
+18,14,Virginia Tech,163.990,10,5.710,9.421,0.9421,E85,0.542,44.1
+19,90,Colorado State University,201.739,10,4.664,7.695,0.7695,E85,0.539,43.6
+20,6,Purdue Univ - W Lafayette,143.657,10,6.577,10.852,1.0852,E85,0.537,43.2
+21,140,Colorado School of Mines,159.595,10,5.931,9.786,0.9786,E85,0.536,43.0
+22,128,North Carolina State Univ - Raleigh,160.885,9,5.317,8.773,0.9748,E85,0.534,42.6
+23,66,Univ of South Florida,173.900,10,4.020,9.286,0.9286,93,0.519,39.7
+24,8,Univ of Alabama - Tuscaloosa,152.165,10,4.624,10.681,1.0681,100,0.515,39.1
+25,28,Univ of Colorado - Boulder,192.659,10,5.281,8.713,0.8713,E85,0.499,36.0
+26,61,Univ of Connecticut,142.085,10,5.124,11.836,1.1836,93,0.498,35.8
+27,113,Clemson Univ,182.223,5,2.821,4.654,0.9308,E85,0.494,35.0
+28,48,Embry-Riddle Aero Univ - Daytona Beach,152.378,9,4.342,10.030,1.1144,100,0.493,34.9
+29,39,Temple Univ,194.238,6,2.272,5.248,0.8747,93,0.493,34.9
+30,115,Univ of Missouri,161.284,10,4.625,10.683,1.0683,93,0.486,33.6
+31,32,Università degli studi di Modena e Reggio Emilia,172.794,10,6.044,9.972,0.9972,E85,0.486,33.6
+32,92,Washington State Univ,187.355,10,4.029,9.306,0.9306,93,0.480,32.5
+33,111,Univ of Maryland - College Park,161.777,10,4.681,10.813,1.0813,93,0.479,32.2
+34,109,Univ of Southern California,152.205,10,5.053,11.672,1.1672,100,0.471,30.8
+35,40,Univ of British Columbia,182.243,10,5.978,9.863,0.9863,E85,0.466,29.8
+36,114,Pellissippi State Community College,197.916,10,4.042,9.337,0.9337,93,0.453,27.4
+37,2,Texas A&M Univ,153.708,10,5.211,12.037,1.2037,93,0.453,27.3
+38,105,Univ of Nebraska - Lincoln,162.397,6,4.392,7.246,1.2077,E85,0.427,22.5
+39,67,Saginaw Valley State Univ,194.033,10,4.589,10.600,1.0600,100,0.407,18.7
+40,125,Washington Univ - St Louis,189.555,10,5.191,11.991,1.1991,93,0.368,11.4
+41,81,California State Poly Univ - Pomona,193.288,10,7.688,12.685,1.2685,E85,0.342,6.4
+42,45,Univ of Maine,195.970,8,4.444,10.265,1.2831,93,0.333,4.8
+,65,Lawrence Technological Univ,281.134,10,3.012,4.969,0.4969,E85,,-
+,36,Polytechnic Univ of Puerto Rico,227.980,10,2.154,4.975,0.4975,93,,-
+,127,West Virginia Univ,229.970,10,2.824,6.523,0.6523,100,,-
+,98,Tennessee Tech Univ,332.466,6,1.774,4.097,0.6828,100,,-
+,34,US Naval Academy,211.501,10,3.104,7.170,0.7170,93,,-
+,46,Colorado Mesa University,214.623,10,3.656,8.445,0.7677,93,,-
+,68,Kettering Univ,226.209,10,3.336,7.706,0.7706,100,,-
+,31,Univ of Oklahoma,209.338,8,3.653,8.438,1.0548,100,,-
+,49,Univ of Delaware,219.054,10,4.657,10.757,1.0757,93,,-
+,102,Duke Univ,223.436,7,3.541,8.179,1.1684,100,,-
+,18,Univ of Georgia,212.326,10,5.119,11.824,1.1824,93,,-
+,79,South Dakota School of Mines & Tech,270.377,5,3.686,6.081,1.2162,E85,,-
+,30,Univ of Arizona,222.612,7,4.651,10.743,1.5347,93,,-
+,25,Southern Illinois Univ - Edwardville,237.367,6,6.628,10.936,1.8227,E85,,-
+,135,Liberty Univ,207.228,7,5.684,13.130,1.8757,100,,-
+,54,Univ of Calif - Irvine,207.377,5,4.749,10.970,2.1940,93,,-
+,72,Univ of Hartford,220.342,5,,,,93,,-

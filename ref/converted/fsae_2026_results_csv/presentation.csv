@@ -1,0 +1,132 @@
+Place,CarNum,Team,Finalist,RawScore,Penalty,Score
+1,125,Washington Univ - St Louis,Finalist,75,,75
+2,1,Universidad Politecnica de Valencia,Finalist,71.3,,71.3
+3 T,14,Virginia Tech,Finalist,69.6,,69.6
+3 T,61,Univ of Connecticut,Finalist,69.6,,69.6
+5,6,Purdue Univ - W Lafayette,Finalist,69.4,,69.4
+6 T,32,Università degli studi di Modena e Reggio Emilia,Finalist,68.8,,68.8
+6 T,106,Arizona State Univ - Tempe,Finalist,68.8,,68.8
+8,10,Univ of North Carolina - Charlotte,Finalist,68.5,,68.5
+9,107,University of Bologna,Finalist,65.0,,65.0
+10,9,Univ of Texas - Arlington,Finalist,60.0,,60.0
+11,117,Univ of North Dakota,,60.0,,60.0
+12,11,Escola de Engenharia de Sao Carlos,,58.8,,58.8
+13,135,Liberty Univ,,58.8,,58.8
+14,133,Mississippi State Univ,,58.3,,58.3
+15,91,California State Univ - Northridge,,57.8,,57.8
+16,128,North Carolina State Univ - Raleigh,,55.9,,55.9
+17,8,Univ of Alabama - Tuscaloosa,,55.4,,55.4
+18,18,Univ of Georgia,,55.3,,55.3
+19,3,Georgia Institute of Technology,,54.6,,54.6
+20,73,Trinity Univ,,54.4,,54.4
+21,58,Univ of Illinois - Chicago,,53.0,,53.0
+22,111,Univ of Maryland - College Park,,52.9,,52.9
+23,84,Minnesota State University - Mankato,,52.3,,52.3
+24,120,Univ of Cincinnati,,52.2,,52.2
+25,86,Lehigh Univ,,52.2,,52.2
+26,109,Univ of Southern California,,52.0,,52.0
+27,102,Duke Univ,,51.6,,51.6
+28,4,Kansas State Univ,,50.6,,50.6
+29,26,Missouri University of Science and Tech,,49.7,,49.7
+30,19,York University,,48.6,,48.6
+31,87,Michigan Tech Univ,,48.5,,48.5
+32,140,Colorado School of Mines,,47.6,,47.6
+33,62,Oklahoma State Univ,,46.9,,46.9
+34,66,Univ of South Florida,,46.2,,46.2
+35,83,Vanderbilt Univ,,44.4,,44.4
+36 T,64,Villanova Univ,,43.0,,43.0
+36 T,90,Colorado State University,,43.0,,43.0
+38,20,Brown Univ,,42.3,,42.3
+39,28,Univ of Colorado - Boulder,,41.9,,41.9
+40,68,Kettering Univ,,40.8,,40.8
+41,115,Univ of Missouri,,40.2,,40.2
+42,96,Grand Canyon University,,38.7,,38.7
+43,2,Texas A&M Univ,,38.0,,38.0
+44,29,Oakland University,,37.3,,37.3
+45,118,Univ of Calif - Berkeley,,37.2,,37.2
+46,100,Univ of Kentucky,,36.3,,36.3
+47,50,Univ of Guelph,,31.2,,31.2
+48,76,Univ of Wisconsin - Platteville,,29.6,,29.6
+49,60,Syracuse Univ,,29.6,,29.6
+50,54,Univ of Calif - Irvine,,29.5,,29.5
+51,71,Lakehead Univ,,29.1,,29.1
+52,24,Purdue Univ - Northwest,,28.9,,28.9
+53,43,Universidad Autonoma Estado Mexico,,27.7,,27.7
+54,72,Univ of Hartford,,25.5,,25.5
+55 T,21,Valparaiso University,,25.0,,25.0
+55 T,77,Florida Atlantic Univ,,25.0,,25.0
+55 T,82,Virginia Commonwealth Univ,,25.0,,25.0
+55 T,136,Univ of Massachusetts - Amherst,,25.0,,25.0
+59,89,Univ of Manitoba,RFP,20.0,,20.0
+60,37,Grand Valley State Univ,RFP,19.9,,19.9
+61,17,US Air Force Academy,RFP,19.7,,19.7
+62,74,York College of Pennsylvania,RFP,19.5,,19.5
+63,47,Univ of Toledo,RFP,19.4,,19.4
+64,70,Wichita State Univ,RFP,19.3,,19.3
+65,31,Univ of Oklahoma,RFP,19.0,,19.0
+66,44,Univ of North Florida,RFP,18.7,,18.7
+67,40,Univ of British Columbia,RFP,18.4,,18.4
+68,65,Lawrence Technological Univ,RFP,18.4,,18.4
+69,116,Univ of Texas - Dallas,RFP,18.4,,18.4
+70,127,West Virginia Univ,RFP,17.8,,17.8
+71,92,Washington State Univ,RFP,17.7,,17.7
+72,119,Universidad Autonoma de Baja California,RFP,17.6,,17.6
+73,51,Univ of Central Florida,RFP,17.5,,17.5
+74,85,Univ of Michigan - Dearborn,RFP,17.5,,17.5
+75,121,Wayne State Univ,RFP,17.5,,17.5
+76,81,California State Poly Univ - Pomona,RFP,17.3,,17.3
+77,49,Univ of Delaware,RFP,17.1,,17.1
+78,88,Univ of Texas - Austin,RFP,17.1,,17.1
+79,52,Texas State University,RFP,16.9,,16.9
+80,30,Univ of Arizona,RFP,16.7,,16.7
+81,48,Embry-Riddle Aero Univ - Daytona Beach,RFP,16.6,,16.6
+82,23,Univ of Ottawa,RFP,16.2,,16.2
+83,110,Univ of Saskatchewan,RFP,16.2,,16.2
+84,15,Sacramento State Univ,RFP,16.1,,16.1
+85,134,Univ of Houston - Houston,RFP,16.1,,16.1
+86,41,SUNY - Stony Brook,RFP,15.7,,15.7
+87,97,Universidad Panamericana Sede Guadalajar,RFP,15.6,,15.6
+88,113,Clemson Univ,RFP,15.6,,15.6
+89,38,George Mason Univ,RFP,15.6,,15.6
+90,101,Hope College,RFP,15.6,,15.6
+91,80,Oregon Inst of Tech,RFP,15.1,,15.1
+92,105,Univ of Nebraska - Lincoln,RFP,14.9,,14.9
+93,131,Loyola Marymount Univ,RFP,14.9,,14.9
+94,36,Polytechnic Univ of Puerto Rico,RFP,14.8,,14.8
+95,104,ITESM - Campus Cuernavaca,RFP,14.4,,14.4
+96,93,Univ of Massachusetts - Lowell,RFP,14.2,,14.2
+97,22,New Jersey Institute of Technology,RFP,14.2,,14.2
+98,56,Alabama A & M Univ,RFP,14.2,,14.2
+99,67,Saginaw Valley State Univ,RFP,13.6,,13.6
+100,114,Pellissippi State Community College,RFP,13.4,,13.4
+101,27,California State Univ - Fullerton,RFP,13.4,,13.4
+102,69,Univ of Minnesota - Duluth,RFP,13.4,,13.4
+103,122,Drexel Univ,RFP,13.2,,13.2
+104,123,IPN Esime Zacatenco,RFP,12.9,,12.9
+105,75,California State Univ - Chico,RFP,12.8,,12.8
+106,130,Montana State Univ - Bozeman,RFP,12.5,,12.5
+107,39,Temple Univ,RFP,12.2,,12.2
+108,103,UP Aguascalientes,RFP,12.2,,12.2
+109,108,Benedictine College,RFP,12.0,,12.0
+110,57,Instituto Tecnologico de Estudios Superi,RFP,11.6,,11.6
+111,25,Southern Illinois Univ - Edwardville,RFP,11.3,,11.3
+112,94,Northern Arizona Univ,RFP,11.3,,11.3
+113,34,US Naval Academy,RFP,11.3,,11.3
+114,53,Southern Illinois Univ at Carbondale,RFP,11.2,,11.2
+115,95,Oral Roberts University,RFP,11.0,,11.0
+116,55,Bradley Univ,RFP,10.6,,10.6
+117,99,Univ of Rhode Island,RFP,10.6,,10.6
+118,79,South Dakota School of Mines & Tech,RFP,10.6,,10.6
+119,63,Univ of Texas - San Antonio,RFP,10.5,,10.5
+120,78,Old Dominion Univ,RFP,10.4,,10.4
+121,46,Colorado Mesa University,RFP,10.4,,10.4
+122,139,Clarkson University,RFP,9.9,,9.9
+123,35,Penn State Univ - Harrisburg,RFP,9.7,,9.7
+124,138,Florida International Univ,RFP,9.3,,9.3
+125,98,Tennessee Tech Univ,RFP,9.1,,9.1
+126,42,South Dakota State Univ,RFP,8.8,,8.8
+127,45,Univ of Maine,RFP,8.5,,8.5
+128 T,33,Univ of New Hampshire,RFP,5.0,,5.0
+128 T,59,San Francisco State Univ,RFP,5.0,,5.0
+128 T,129,Texas A&M International University,RFP,5.0,,5.0
+131,12,Univ of Colorado - Colorado Springs,RFP,1.0,,1.0

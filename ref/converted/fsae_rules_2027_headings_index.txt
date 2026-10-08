@@ -1,0 +1,417 @@
+# line number in fsae_rules_2027_v1.md, PDF page, heading
+L9	p1	# Rules 2027
+L27	p2	### TABLE OF CONTENTS
+L180	p4	### REVISION SUMMARY
+L198	p5	## GR - GENERAL REGULATIONS
+L200	p5	### GR.1 FORMULA SAE COMPETITION OBJECTIVE
+L202	p5	#### GR.1.1 Collegiate Design Series
+L222	p5	#### GR.1.2 Formula SAE Concept
+L226	p5	#### GR.1.3 Engineering Competition
+L232	p5	#### GR.1.4 Vehicle Design Objectives
+L242	p5	#### GR.1.5 Good Engineering Practices
+L258	p6	### GR.2 ORGANIZER AUTHORITY
+L260	p6	#### GR.2.1 General Authority
+L270	p6	#### GR.2.3 Problem Resolution
+L274	p6	#### GR.2.4 Restriction on Vehicle Use
+L278	p6	### GR.3 TEAM RESPONSIBILITY
+L280	p6	#### GR.3.1 Rules Compliance
+L284	p6	#### GR.3.2 Student Project
+L288	p6	#### GR.3.3 Understanding the Rules
+L316	p7	### GR.4 RULES AUTHORITY AND ISSUE
+L318	p7	#### GR.4.1 Rules Authority
+L322	p7	#### GR.4.2 Rules Validity
+L360	p7	#### GR.4.6 Violations on Intent
+L376	p8	### GR.5 RULES OF CONDUCT
+L378	p8	#### GR.5.1 Unsportsmanlike Conduct
+L384	p8	#### GR.5.2 Official Instructions
+L388	p8	#### GR.5.3 Arguments with Officials
+L406	p8	### GR.6 RULES FORMAT AND USE
+L408	p8	#### GR.6.1 Definition of Terms
+L418	p8	#### GR.6.2 Capitalized Terms
+L450	p9	#### GR.6.5 Figures and Illustrations
+L454	p9	#### GR.6.6 Change Identification
+L458	p9	### GR.7 RULES QUESTIONS
+L460	p9	#### GR.7.1 Question Types
+L464	p9	#### GR.7.2 Question Format
+L494	p9	### GR.8 PROTESTS
+L496	p9	#### GR.8.1 Cause for Protest
+L500	p9	#### GR.8.2 Preliminary Review – Required
+L516	p10	#### GR.8.3 Protest Format
+L524	p10	#### GR.8.4 Protest Point Bond
+L528	p10	#### GR.8.5 Protest Period
+L532	p10	#### GR.8.6 Decision
+L536	p10	### GR.9 VEHICLE ELIGIBILITY
+L538	p10	#### GR.9.1 Student Developed Vehicle
+L554	p10	#### GR.9.2 Definitions
+L556	p10	#### GR.9.2.1 Competition Year
+L568	p10	#### GR.9.2.4 Third Year Vehicle
+L584	p11	#### GR.9.3 Formula SAE Competition Eligibility
+L608	p12	## AD - ADMINISTRATIVE REGULATIONS
+L610	p12	### AD.1 THE FORMULA SAE SERIES
+L612	p12	#### AD.1.1 Rule Variations
+L616	p12	#### AD.1.2 Official Announcements and Competition Information
+L620	p12	#### AD.1.3 Official Languages
+L626	p12	### AD.2 OFFICIAL INFORMATION SOURCES
+L628	p12	#### AD.2.1 Event Website
+L640	p12	#### AD.2.2 Contact the Organizer
+L644	p12	### AD.3 INDIVIDUAL PARTICIPATION REQUIREMENTS
+L646	p12	#### AD.3.1 Eligibility
+L656	p12	#### AD.3.2 Age
+L672	p13	#### AD.3.3 Driver’s License
+L676	p13	#### AD.3.4 Society Membership
+L682	p13	#### AD.3.5 Medical Insurance
+L686	p13	#### AD.3.6 Disabled Accessibility
+L690	p13	#### AD.3.7 Career Profile
+L694	p13	### AD.4 INDIVIDUAL REGISTRATION REQUIREMENTS
+L696	p13	#### AD.4.1 Preliminary Registration
+L700	p13	#### AD.4.2 Onsite Registration
+L710	p13	### AD.5 TEAM ADVISORS AND OFFICERS
+L712	p13	#### AD.5.1 Faculty Advisor
+L740	p14	#### AD.5.2 Electrical System Officer  (EV Only)
+L754	p14	#### AD.5.3 Electric System Advisor  (EV Only)
+L770	p14	### AD.6 COMPETITION REGISTRATION
+L772	p14	#### AD.6.1 Registration Details
+L800	p15	#### AD.6.4 Withdrawals
+L804	p15	### AD.7 COMPETITION SITE
+L806	p15	#### AD.7.1 Personal Vehicles
+L810	p15	#### AD.7.2 Motorcycles, Bicycles, Rollerblades, etc. - Prohibited
+L814	p15	#### AD.7.3 Self-propelled Pit Carts, Tool Boxes, etc. - Prohibited
+L818	p15	#### AD.7.4 Trash Cleanup
+L842	p16	## PS - PRE-COMPETITION SUBMISSIONS
+L844	p16	### PS.1 DOCUMENTATION
+L846	p16	#### PS.1.1 Requirements
+L852	p16	#### PS.1.2 Definitions
+L896	p16	### PS.2 SUBMISSION DETAILS
+L898	p16	#### PS.2.1 Submission Location
+L926	p17	### PS.3 SUBMISSION PENALTIES
+L928	p17	#### PS.3.1 Submissions
+L942	p17	#### PS.3.2 Penalty Detail
+L950	p17	#### PS.3.3 Removal of Team Entry
+L966	p17	#### PS.3.4 Specific Penalties
+L994	p18	#### Table PS-1 Submission Information
+L1017	p18	#### Table PS-2 Submission Penalty Information
+L1040	p19	## V - VEHICLE REQUIREMENTS
+L1042	p19	### V.1 CONFIGURATION
+L1046	p19	#### V.1.1 Open Wheel
+L1060	p19	#### V.1.2 Wheelbase
+L1082	p20	#### V.1.4 Ground Clearance
+L1094	p20	### V.2 DRIVER
+L1096	p20	#### V.2.1 Accommodation
+L1114	p20	### V.3 SUSPENSION AND STEERING
+L1116	p20	#### V.3.1 Suspension
+L1144	p21	#### V.3.2 Steering
+L1184	p21	### V.4 WHEELS AND TIRES
+L1266	p23	## F - CHASSIS AND STRUCTURAL
+L1268	p23	### F.1 DEFINITIONS
+L1270	p23	#### F.1.1 Chassis
+L1274	p23	#### F.1.2 Frame Member
+L1320	p23	#### F.1.11 Primary Structure Envelope
+L1324	p23	#### F.1.12 Major Structure
+L1340	p24	#### F.1.13 Rollover Protection Envelope
+L1350	p24	#### F.1.14 Tire Surface Envelope
+L1358	p24	#### F.1.15 Component Envelope
+L1366	p24	#### F.1.16 Buckling Modulus (EI)
+L1370	p24	#### F.1.17 Triangulation
+L1394	p25	#### F.1.18 Nonflammable Material
+L1398	p25	### F.2 DOCUMENTATION
+L1412	p25	#### F.2.2 Structural Documentation
+L1436	p25	### F.3 TUBING AND MATERIAL
+L1438	p25	#### F.3.1 Dimensions
+L1454	p26	#### F.3.2 Tubing Requirements
+L1456	p26	#### F.3.2.1 Requirements by Application
+L1478	p26	#### F.3.3 Non Structural Tubing
+L1583	p28	### F.4 COMPOSITE AND OTHER MATERIALS
+L1585	p28	#### F.4.1 Requirements
+L1757	p30	#### Use of Laminates
+L1783	p31	#### F.4.4 Equivalent Flat Panel Calculation
+L1791	p31	### F.5 CHASSIS REQUIREMENTS
+L1817	p31	#### Bent Tubes or Multiple Tubes
+L1895	p33	#### F.5.6.5 Driver Template
+L1911	p33	#### F.5.6.6 Driver Template Position
+L1979	p35	#### F.5.9 Main Hoop Braces
+L2011	p35	#### F.5.10 Head Restraint Protection
+L2037	p36	#### F.5.11 External Items
+L2059	p36	#### F.5.12 Mechanically Attached Roll Hoop Bracing
+L2101	p37	#### Figure – Sleeved Butt Joint
+L2115	p37	#### F.5.13 Other Bracing Requirements
+L2121	p37	#### F.5.14 Steering Protection
+L2153	p38	#### F.5.16 Component Protection
+L2161	p38	### F.6 TUBE FRAMES
+L2223	p39	#### Side Impact Structure
+L2251	p39	#### Shoulder Harness Mounting
+L2287	p40	#### Main Hoop Bracing Supports
+L2303	p40	### F.7 MONOCOQUE
+L2337	p41	#### F.7.2 Front Bulkhead
+L2375	p41	#### F.7.5 Side Impact Structure
+L2409	p42	#### Main Hoop Attachment
+L2421	p42	#### Roll Hoop Bracing Attachment
+L2427	p42	#### Attachments
+L2544	p44	### F.8 FRONT CHASSIS PROTECTION
+L2546	p44	#### F.8.1 Requirements
+L2618	p45	#### Composite Anti Intrusion Plate
+L2684	p46	#### Impact Attenuator Attachment
+L2765	p47	#### Front Impact Objects
+L2801	p48	#### F.8.7 Front Impact Verification
+L2917	p49	### F.9 FUEL SYSTEM (IC ONLY)
+L2947	p50	### F.10 TRACTIVE BATTERY CONTAINER (EV ONLY)
+L2969	p50	#### F.10.2 Structure
+L3190	p53	### F.11 TRACTIVE SYSTEM (EV ONLY)
+L3194	p53	#### F.11.1 Location
+L3208	p53	#### F.11.2 Side Impact Protection
+L3310	p56	## T - TECHNICAL ASPECTS
+L3312	p56	### T.1 COCKPIT
+L3354	p57	#### T.1.2 Internal Cross Section
+L3366	p57	#### T.1.2.2
+L3396	p57	#### Driver Protection
+L3422	p58	#### Vehicle Controls
+L3448	p58	#### Driver’s Seat
+L3456	p58	#### T.1.6 Thermal Protection
+L3490	p59	#### T.1.7 Floor Closeout
+L3502	p59	#### Firewall
+L3558	p60	### T.2 DRIVER ACCOMMODATION
+L3626	p61	#### Belt, Strap and Harness Installation - General
+L3726	p62	#### T.2.6 Shoulder Harness
+L3878	p65	#### T.2.9 Roll Bar Padding
+L3882	p65	### T.3 BRAKES
+L3884	p65	#### T.3.1 Brake System
+L3926	p66	#### T.3.2 Brake Pedal, Pedal Box and Mounting
+L3992	p67	### T.4 ELECTRONIC THROTTLE COMPONENTS
+L3994	p67	#### T.4.1 Applicability
+L4092	p68	### T.5 POWERTRAIN
+L4094	p68	#### T.5.1 Transmission and Drive
+L4110	p69	#### T.5.2 Drivetrain Shields and Guards
+L4176	p70	#### T.5.3 Motor Protection (EV Only)
+L4212	p70	#### System Sealing
+L4260	p71	### T.6 PRESSURIZED SYSTEMS
+L4318	p72	#### T.6.2 High Pressure Hydraulic Pumps and Lines
+L4326	p72	### T.7 BODYWORK AND AERODYNAMIC DEVICES
+L4376	p73	#### T.7.3.2 Head Restraint Plane
+L4390	p73	#### Location
+L4396	p73	#### Length
+L4406	p73	#### Width
+L4422	p73	#### Height
+L4454	p74	### T.8 FASTENERS
+L4456	p74	#### T.8.1 Critical Fasteners
+L4530	p75	### T.9 ELECTRICAL EQUIPMENT
+L4578	p76	#### T.9.3 Master Switches
+L4644	p77	## VE - VEHICLE AND DRIVER EQUIPMENT
+L4646	p77	### VE.1 VEHICLE IDENTIFICATION
+L4648	p77	#### VE.1.1 Vehicle Number
+L4682	p77	#### VE.1.3 SAE Logo
+L4686	p77	#### VE.1.4 Inspection Sticker
+L4700	p77	### VE.2 VEHICLE EQUIPMENT
+L4702	p77	#### VE.2.1 Jacking Point
+L4738	p78	#### VE.2.2 Push Bar
+L4746	p78	#### VE.2.3 Fire Extinguisher
+L4792	p79	#### • A multimeter
+L4794	p79	#### VE.2.5 Camera Mounts
+L4806	p79	### VE.3 DRIVER EQUIPMENT
+L4808	p79	#### VE.3.1 General
+L4828	p79	#### VE.3.2 Helmet
+L4860	p80	#### VE.3.3 Driver Gear
+L4864	p80	#### VE.3.3.1 Driver Suit
+L4884	p80	#### VE.3.3.3 Balaclava
+L4888	p80	#### VE.3.3.4 Socks
+L4892	p80	#### VE.3.3.5 Shoes
+L4902	p80	#### VE.3.3.6 Gloves
+L4908	p80	#### VE.3.3.7 Arm Restraints
+L4926	p81	## IC - INTERNAL COMBUSTION ENGINE VEHICLES
+L4928	p81	### IC.1 GENERAL REQUIREMENTS
+L4930	p81	#### IC.1.1 Engine Limitations
+L4948	p81	### IC.2 AIR INTAKE SYSTEM
+L4958	p81	#### IC.2.3 Intake System Mounting
+L4974	p81	#### IC.2.4 Intake System Restrictor
+L5034	p82	#### IC.2.6 Connections to Intake
+L5038	p82	### IC.3 THROTTLE
+L5040	p82	#### IC.3.1 General
+L5060	p83	#### IC.3.2 Throttle Actuation Method
+L5086	p83	### IC.4 ELECTRONIC THROTTLE CONTROL
+L5092	p83	#### IC.4.1 General Design
+L5132	p84	#### IC.4.3 Commercial ETC System
+L5144	p84	#### IC.4.4 Throttle Position Sensor - TPS
+L5188	p85	#### IC.4.5 Accelerator Pedal Position Sensor - APPS
+L5196	p85	#### IC.4.7 Throttle Plausibility Checks
+L5266	p86	### IC.5 FUEL AND FUEL SYSTEM
+L5268	p86	#### IC.5.1 Fuel
+L5276	p86	#### IC.5.2 Fuel System
+L5290	p86	#### IC.5.3 Fuel Tank
+L5324	p87	#### IC.5.4 Fuel Filler Neck & Sight Tube
+L5410	p88	### IC.6 FUEL INJECTION
+L5412	p88	#### IC.6.1 Low Pressure Injection (LPI)
+L5446	p89	#### IC.6.2 High Pressure Injection (HPI) / Direct Injection (DI)
+L5486	p89	### IC.7 EXHAUST AND NOISE CONTROL
+L5488	p89	#### IC.7.1 Exhaust Protection
+L5508	p90	#### IC.7.2 Exhaust Outlet
+L5567	p91	#### IC.9.2 Shutdown Circuit Operation
+L5583	p91	#### IC.9.3 Primary Master Switch
+L5595	p91	#### IC.9.4 Cockpit Main Switch
+L5625	p92	## EV - ELECTRIC VEHICLES
+L5627	p92	### EV.1 DEFINITIONS
+L5629	p92	#### EV.1.1 Cell
+L5633	p92	#### EV.1.2 Module
+L5637	p92	#### EV.1.3 Tractive Battery
+L5657	p92	### EV.2 DOCUMENTATION
+L5659	p92	#### EV.2.1 Electrical System Form - ESF
+L5671	p92	### EV.3 ELECTRICAL LIMITATIONS
+L5673	p92	#### EV.3.1 Operation
+L5761	p94	### EV.4 COMPONENTS
+L5763	p94	#### EV.4.1 Motors
+L5779	p94	#### EV.4.2 Motor Controller
+L5833	p95	#### EV.4.4 Grounded Low Voltage System
+L5885	p95	#### EV.4.10 Hand Cart
+L5917	p96	### EV.5 ENERGY STORAGE
+L5919	p96	#### EV.5.1 Tractive Battery
+L5937	p96	#### EV.5.2 Electrical Configuration
+L6031	p98	#### EV.5.5 Manual Service Disconnect - MSD
+L6059	p98	#### EV.5.6 Precharge and Discharge Circuits
+L6085	p98	#### EV.5.7 Voltage Indicator
+L6105	p99	#### EV.5.7.3 The Voltage Indicator light must show:
+L6159	p99	### EV.6 STATUS INDICATORS
+L6161	p99	#### EV.6.1 Tractive System Status Indicator
+L6331	p102	### EV.7 ELECTRICAL SYSTEM
+L6333	p102	#### EV.7.1 Covers
+L6357	p102	#### EV.7.3 Wiring
+L6403	p103	#### EV.7.4 Connections
+L6405	p103	#### EV.7.4.1 All Tractive System connections must:
+L6483	p104	#### EV.7.6 Overcurrent Protection
+L6563	p105	### EV.8 SHUTDOWN SYSTEM
+L6565	p105	#### EV.8.1 Shutdown Circuit
+L6616	p106	#### EV.8.2 Shutdown Circuit Operation
+L6754	p108	#### EV.8.6 Insulation Monitoring Device - IMD
+L6840	p109	#### EV.8.8 Interlocks
+L6868	p110	#### EV.8.9 Master Switches
+L6884	p110	#### EV.8.10 Shutdown Buttons
+L6910	p110	### EV.9 CHARGER REQUIREMENTS
+L6912	p110	#### EV.9.1 Charger Requirements
+L6928	p111	#### EV.9.1.2 Chargers will be sealed after approval. IN.5.2.2
+L6930	p111	#### EV.9.2 Charger Features
+L6956	p111	#### EV.9.3 Charging Shutdown Circuit
+L7002	p112	### EV.10 VEHICLE OPERATIONS
+L7004	p112	#### EV.10.1 Activation Requirement
+L7008	p112	#### EV.10.2 Activation Sequence
+L7018	p112	#### EV.10.3 Low Voltage (GLV) System
+L7022	p112	#### EV.10.4 Tractive System Active
+L7032	p112	#### EV.10.5 OK to Energize
+L7036	p112	#### EV.10.6 Ready to Drive
+L7050	p112	#### EV.10.7 Ready to Drive Sound
+L7076	p113	### EV.11 EVENT SITE ACTIVITIES
+L7078	p113	#### EV.11.1 Onsite Registration
+L7088	p113	#### EV.11.2 Tractive Battery Pack Removal
+L7094	p113	### EV.12 WORK PRACTICES
+L7096	p113	#### EV.12.1 Personnel
+L7106	p113	#### EV.12.2 Maintenance
+L7116	p113	#### EV.12.3 Lockout
+L7126	p113	#### EV.12.4 Tractive System
+L7162	p114	#### EV.12.5 Charging
+L7178	p114	### EV.13 RED CAR CONDITION
+L7180	p114	#### EV.13.1 Definition
+L7190	p114	#### EV.13.2 Actions
+L7212	p115	## IN - TECHNICAL INSPECTION
+L7216	p115	### IN.1 INSPECTION REQUIREMENTS
+L7218	p115	#### IN.1.1 Inspection Required
+L7222	p115	#### IN.1.2 Technical Inspection Authority
+L7230	p115	#### IN.1.3 Team Responsibility
+L7238	p115	### IN.2 INSPECTION CONDUCT
+L7240	p115	#### IN.2.1 Vehicle Condition
+L7258	p115	#### IN.2.4 Inspection Items
+L7276	p116	#### IN.2.5 Correction
+L7284	p116	#### IN.2.6 Marked Items
+L7290	p116	### IN.3 INSPECTION PARTS
+L7292	p116	#### IN.3.1 Inspection Steps
+L7312	p116	#### IN.3.2 Step Details
+L7316	p116	### IN.4 INITIAL INSPECTION / GEAR CHECK
+L7328	p116	### IN.5 TRACTIVE BATTERY PACK AND CHARGER INSPECTION (EV ONLY)
+L7330	p116	#### IN.5.1 Inspection Items
+L7376	p117	#### IN.5.2 Inspection Conduct
+L7388	p117	### IN.6 VEHICLE INSPECTION
+L7390	p117	#### IN.6.1 Inspection Items
+L7458	p118	### IN.7 DRIVER TEMPLATE INSPECTIONS
+L7470	p118	### IN.8 COCKPIT TEMPLATE INSPECTIONS
+L7484	p118	### IN.9 DRIVER COCKPIT CHECKS
+L7500	p119	#### IN.9.1 Driver Clearance
+L7510	p119	#### IN.9.2 Egress Test
+L7534	p119	### IN.10 ACTIVE INSPECTION (EV ONLY)
+L7536	p119	#### IN.10.1 Insulation Monitoring Device Test
+L7542	p119	#### IN.10.2 Insulation Measurement Test
+L7554	p119	#### IN.10.3 Ready to Drive Sound
+L7570	p120	#### IN.10.4 Active Inspection Completion
+L7576	p120	### IN.11 TILT TEST
+L7598	p120	### IN.12 NOISE AND SWITCH TEST (IC ONLY)
+L7646	p121	#### IN.12.3 Industrial Engine
+L7652	p121	#### IN.12.4 Test Speeds
+L7674	p121	#### IN.12.5 Maximum Permitted Sound Level
+L7686	p121	#### IN.12.7 Switch Function
+L7690	p121	#### IN.12.8 Noise Test Completion
+L7694	p121	### IN.13 RAIN TEST (EV ONLY)
+L7696	p121	#### IN.13.1 Rain Test Requirements
+L7706	p121	#### IN.13.2 Rain Test Conduct
+L7728	p122	#### IN.13.3 Rain Test Completion
+L7738	p122	### IN.14 BRAKE TEST
+L7740	p122	#### IN.14.1 Objective
+L7744	p122	#### IN.14.2 Brake Test Conduct (IC Only)
+L7772	p122	### IN.15 INSPECTION APPROVAL
+L7774	p122	#### IN.15.1 Inspection Approval
+L7796	p123	#### IN.15.2 Inspection Sticker
+L7802	p123	#### IN.15.3 Inspection Validity
+L7808	p123	### IN.16 MODIFICATIONS AND REPAIRS
+L7810	p123	#### IN.16.1 Prior to Inspection Approval
+L7814	p123	#### IN.16.2 After Inspection Approval
+L7864	p124	#### IN.16.3 Repairs or Changes After Inspection Approval
+L7872	p124	### IN.17 REINSPECTION
+L7904	p125	## S - STATIC EVENTS
+L7906	p125	### S.1 GENERAL STATIC
+L7910	p125	### S.2 PRESENTATION EVENT
+L7988	p126	### S.3 COST AND MANUFACTURING EVENT
+L8030	p127	#### S.3.4 Cost Report
+L8048	p127	#### S.3.5 Bill of Materials - BOM
+L8064	p127	#### Late Submission
+L8068	p127	#### S.3.7 Cost Addendum
+L8088	p127	#### Cost Tables
+L8216	p130	### S.4 DESIGN EVENT
+L8218	p130	#### S.4.1 Design Event Objective
+L8266	p130	#### Design Spec Sheet
+L8284	p131	#### S.4.6 Vehicle Condition
+L8298	p131	#### S.4.7 Support Material
+L8310	p131	#### S.4.9 Judging Criteria
+L8344	p132	## D - DYNAMIC EVENTS
+L8346	p132	### D.1 GENERAL DYNAMIC
+L8348	p132	#### D.1.1 Dynamic Events and Maximum Scores
+L8366	p132	### D.2 PIT AND PADDOCK
+L8368	p132	#### D.2.1 Vehicle Movement
+L8390	p132	#### Fueling and Charging
+L8420	p133	### D.3 DRIVING
+L8422	p133	#### D.3.1 Drivers Meetings – Attendance Required
+L8456	p133	#### D.3.6 Starting
+L8484	p134	#### D.3.9 Vehicle Integrity
+L8496	p134	### D.4 FLAGS
+L8528	p134	### D.5 WEATHER CONDITIONS
+L8562	p135	### D.6 TIRES AND TIRE CHANGES
+L8632	p136	### D.7 DRIVER LIMITATIONS
+L8634	p136	#### D.7.1 Three Event Limit
+L8642	p136	### D.8 DEFINITIONS
+L8668	p136	### D.9 ACCELERATION EVENT
+L8720	p137	### D.10 SKIDPAD EVENT
+L8768	p138	#### D.10.2 Skidpad Procedure
+L8802	p139	#### D.10.3 Skidpad Penalties
+L8834	p139	### D.11 AUTOCROSS EVENT
+L8838	p139	#### D.11.1 Autocross Layout
+L8872	p140	#### D.11.2 Autocross Procedure
+L8890	p140	#### D.11.3 Autocross Penalties
+L8906	p140	#### D.11.4 Autocross Scoring
+L8936	p141	### D.12 ENDURANCE EVENT
+L8980	p141	#### D.12.3 Endurance Run Order
+L9006	p142	#### D.12.4 Endurance Vehicle Starting / Restarting
+L9024	p142	#### D.12.5 Endurance Event Procedure
+L9084	p143	#### D.12.8 Driver Change Procedure
+L9158	p144	#### D.12.11 Endurance Event – Passing
+L9176	p144	#### D.12.12 Endurance Penalties
+L9206	p144	#### D.12.13 Endurance Scoring
+L9208	p144	#### D.12.13.1 Scoring Term Definitions:
+L9248	p145	### D.13 EFFICIENCY EVENT
+L9252	p145	#### D.13.1 Efficiency General Information
+L9302	p146	#### D.13.3 Efficiency Eligibility
+L9322	p146	#### D.13.4 Efficiency Scoring
+L9376	p147	### D.14 POST ENDURANCE
+L9378	p147	#### D.14.1 Technical Inspection Required
+L9384	p147	#### D.14.2 Post Endurance Penalties
+L9396	p147	#### D.14.3 Post Endurance Penalty Guidelines

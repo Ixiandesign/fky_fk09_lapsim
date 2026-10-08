@@ -1,0 +1,132 @@
+CarNum,Team,Country,EngineCylinders,EngineDisp_cc,Weight_kg,Weight_lbs
+1,Universidad Politecnica de Valencia,ES,1,706,187.3,413
+2,Texas A&M Univ,US,4,599,220.9,487
+3,Georgia Institute of Technology,US,4,599,207.7,458
+4,Kansas State Univ,US,3,675,198.7,438
+6,Purdue Univ - W Lafayette,US,4,599,202.3,446
+8,Univ of Alabama - Tuscaloosa,US,4,599,212.3,468
+9,Univ of Texas - Arlington,US,2,321,,
+10,Univ of North Carolina - Charlotte,US,1,450,167.4,369
+11,Escola de Engenharia de Sao Carlos,BR,1,375,179.6,396
+12,Univ of Colorado - Colorado Springs,US,,,,
+14,Virginia Tech,US,2,659,222.3,490
+15,Sacramento State Univ,US,4,636,234.1,516
+17,US Air Force Academy,US,4,599,,
+18,Univ of Georgia,US,4,599,210.9,465
+19,York University,US,4,600,,
+20,Brown Univ,US,4,599,192.8,425
+21,Valparaiso University,US,,,,
+22,New Jersey Institute of Technology,US,4,599,230.9,509
+23,Univ of Ottawa,CA,4,599,224.5,495
+24,Purdue Univ - Northwest,US,4,599,217.3,479
+25,Southern Illinois Univ - Edwardville,US,4,599,244.5,539
+26,Missouri University of Science and Tech,US,4,636,219.1,483
+27,California State Univ - Fullerton,US,2,689,209.1,461
+28,Univ of Colorado - Boulder,US,2,689,217.7,480
+29,Oakland University,US,4,599,219.5,484
+30,Univ of Arizona,US,4,599,213.2,470
+31,Univ of Oklahoma,US,4,636,213.2,470
+32,Università degli studi di Modena e Reggio Emilia,IT,4,708,200.5,442
+33,Univ of New Hampshire,US,2,659,194.6,429
+34,US Naval Academy,US,2,499,203.7,449
+35,Penn State Univ - Harrisburg,US,4,599,229.1,505
+36,Polytechnic Univ of Puerto Rico,US,2,296,227.7,502
+37,Grand Valley State Univ,US,4,599,,
+38,George Mason Univ,US,,,,
+39,Temple Univ,US,4,600,229.1,505
+40,Univ of British Columbia,CA,3,675,224.1,494
+41,SUNY - Stony Brook,US,2,470,,
+42,South Dakota State Univ,US,4,600,207.3,457
+43,Universidad Autonoma Estado Mexico,MX,4,599,258.5,570
+44,Univ of North Florida,US,4,599,226.3,499
+45,Univ of Maine,US,4,599,216.8,478
+46,Colorado Mesa University,US,2,649,210.5,464
+47,Univ of Toledo,US,4,599,,
+48,Embry-Riddle Aero Univ - Daytona Beach,US,4,599,209.1,461
+49,Univ of Delaware,US,4,599,243.1,536
+50,Univ of Guelph,CA,4,599,230,507
+51,Univ of Central Florida,US,4,636,223.2,492
+52,Texas State University,US,4,599,240,529
+53,Southern Illinois Univ at Carbondale,US,,,,
+54,Univ of Calif - Irvine,US,4,599,235.4,519
+55,Bradley Univ,US,2,499,217.7,480
+56,Alabama A & M Univ,US,4,599,,
+57,Instituto Tecnologico de Estudios Superi,BR,4,599,284.9,628
+58,Univ of Illinois - Chicago,US,4,599,,
+59,San Francisco State Univ,US,,,,
+60,Syracuse Univ,US,4,600,244.5,539
+61,Univ of Connecticut,US,4,600,216.4,477
+62,Oklahoma State Univ,US,4,636,240.4,530
+63,Univ of Texas - San Antonio,US,4,599,239.5,528
+64,Villanova Univ,US,4,599,205.9,454
+65,Lawrence Technological Univ,US,2,689,239,527
+66,Univ of South Florida,US,4,599,226.3,499
+67,Saginaw Valley State Univ,US,4,599,226.3,499
+68,Kettering Univ,US,2,689,189.6,418
+69,Univ of Minnesota - Duluth,US,,,,
+70,Wichita State Univ,US,,,,
+71,Lakehead Univ,CA,1,693,227.2,501
+72,Univ of Hartford,US,1,449,183.7,405
+73,Trinity Univ,CA,4,599,259,571
+74,York College of Pennsylvania,US,4,599,247.7,546
+75,California State Univ - Chico,US,1,449,192.8,425
+76,Univ of Wisconsin - Platteville,US,2,689,234.5,517
+77,Florida Atlantic Univ,US,,,,
+78,Old Dominion Univ,US,4,599,213.6,471
+79,South Dakota School of Mines & Tech,US,4,599,208.2,459
+80,Oregon Inst of Tech,US,4,599,,
+81,California State Poly Univ - Pomona,US,4,599,215.5,475
+82,Virginia Commonwealth Univ,US,1,449,198.7,438
+83,Vanderbilt Univ,US,1,501,156.5,345
+84,Minnesota State University - Mankato,US,4,599,218.2,481
+85,Univ of Michigan - Dearborn,US,2,599,222.3,490
+86,Lehigh Univ,US,1,450,167.8,370
+87,Michigan Tech Univ,US,2,499,205,452
+88,Univ of Texas - Austin,US,4,599,214.1,472
+89,Univ of Manitoba,CA,1,510,191,421
+90,Colorado State University,US,4,599,215.5,475
+91,California State Univ - Northridge,US,4,599,197.3,435
+92,Washington State Univ,US,4,649,215.9,476
+93,Univ of Massachusetts - Lowell,US,4,599,239.5,528
+94,Northern Arizona Univ,US,2,649,262.2,578
+95,Oral Roberts University,US,4,600,,
+96,Grand Canyon University,US,1,690,184.6,407
+97,Universidad Panamericana Sede Guadalajar,MX,1,304,236.8,522
+98,Tennessee Tech Univ,US,2,669,189.1,417
+99,Univ of Rhode Island,US,4,599,224.1,494
+100,Univ of Kentucky,US,4,599,228.6,504
+101,Hope College,US,4,599,214.1,472
+102,Duke Univ,US,2,689,197.8,436
+103,UP Aguascalientes,MX,4,600,285.3,629
+104,ITESM - Campus Cuernavaca,MX,4,636,344.7,760
+105,Univ of Nebraska - Lincoln,US,4,636,201.8,445
+106,Arizona State Univ - Tempe,US,4,599,199.1,439
+107,University of Bologna,IT,1,659,220.9,487
+108,Benedictine College,US,4,599,297.6,656
+109,Univ of Southern California,US,4,600,223.2,492
+110,Univ of Saskatchewan,CA,4,600,249.5,550
+111,Univ of Maryland - College Park,US,4,599,214.5,473
+113,Clemson Univ,US,4,636,197.3,435
+114,Pellissippi State Community College,US,4,599,221.4,488
+115,Univ of Missouri,US,4,636,216.8,478
+116,Univ of Texas - Dallas,US,4,599,215,474
+117,Univ of North Dakota,US,4,600,212.3,468
+118,Univ of Calif - Berkeley,US,1,450,162.8,359
+119,Universidad Autonoma de Baja California,MX,4,599,,
+120,Univ of Cincinnati,US,2,689,241.8,533
+121,Wayne State Univ,US,4,599,210.9,465
+122,Drexel Univ,US,1,478,176.9,390
+123,IPN Esime Zacatenco,MX,2,689,,
+125,Washington Univ - St Louis,US,4,599,224.5,495
+127,West Virginia Univ,US,1,449,200,441
+128,North Carolina State Univ - Raleigh,US,4,636,201.4,444
+129,Texas A&M International University,US,3,675,,
+130,Montana State Univ - Bozeman,US,4,599,261.7,577
+131,Loyola Marymount Univ,US,4,600,260.8,575
+133,Mississippi State Univ,US,1,450,176.9,390
+134,Univ of Houston - Houston,US,4,599,209.6,462
+135,Liberty Univ,US,4,599,232.7,513
+136,Univ of Massachusetts - Amherst,US,,,,
+138,Florida International Univ,US,,,,
+139,Clarkson University,US,4,599,,
+140,Colorado School of Mines,US,4,599,199.1,439

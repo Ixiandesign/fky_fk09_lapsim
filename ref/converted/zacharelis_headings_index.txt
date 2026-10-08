@@ -1,0 +1,147 @@
+# line number in zacharelis_2023_vehdyn_perfsim.md, PDF page, heading
+L7	p1	# Vehicle Dynamics and Performance Simulation
+L54	p4	## Abstract
+L84	p6	## Περίληψη
+L322	p13	## 1. Introduction
+L324	p13	### 1.1 Background and Motivation
+L330	p13	### 1.2 Objective
+L360	p14	### 1.3 Baseline Vehicle
+L418	p17	### 1.4 Structure of the Thesis
+L420	p17	#### 1.4.1 General
+L424	p17	#### 1.4.2 Chapters Breakdown
+L600	p24	## 2. Model
+L602	p24	### 2.1 Introduction
+L630	p25	### 2.2 General Dimensions and Parameters
+L632	p25	#### 2.2.1 General Parameters
+L698	p27	#### 2.2.2 General Parameters Supplementary Calculations
+L761	p28	### 2.3 Aerodynamics Model
+L783	p29	#### 2.3.1 Aerodynamics Parameters
+L858	p31	### 2.4 Tyres Model
+L860	p31	#### 2.4.1 Tyres Parameters
+L894	p32	#### 2.4.2 Coefficient of Friction and Tyre Load Sensitivity
+L1016	p35	#### 2.4.3 Cornering Stiffness
+L1038	p36	### 2.5 Suspension Model
+L1112	p38	#### 2.5.1 Definitions
+L1212	p42	#### 2.5.2 Suspension Parameters Supplementary Calculations Spring Stiffness:
+L1266	p44	### 2.6 Powertrain Model
+L1268	p44	#### 2.6.1 Engine and Drivetrain Parameters
+L1288	p44	#### 2.6.2 Engine Curve
+L1323	p45	#### 2.6.3 Drivetrain
+L1416	p48	#### 2.6.4 Tractive Force
+L1531	p53	### 2.7 Shifting Model
+L1604	p55	### 2.8 Forces Model
+L1632	p56	#### 2.8.1 Vertical
+L1746	p59	#### 2.8.2 Longitudinal
+L1909	p64	#### 2.8.3 Lateral
+L1939	p65	#### 2.8.4 Weight Transfer Effect
+L2010	p67	### 2.9 Steering,  Braking  and Throttle Model
+L2016	p67	#### 2.9.1 Steering
+L2150	p70	#### 2.9.2 Braking
+L2421	p76	#### 2.9.3 Throttle
+L2526	p80	### 2.10 Performance Envelope – GGV Diagram
+L2528	p80	#### 2.10.1 Simplified GG Diagram
+L2642	p84	#### 2.10.2 GGV Diagram
+L2772	p91	## 3. Simulation Specific Scenarios
+L2774	p91	### 3.1 Introduction
+L2792	p91	### 3.2 Acceleration
+L2794	p91	#### 3.2.1 Algorithm
+L3176	p102	#### 3.2.2 Weight Transfer Effect
+L3383	p107	#### 3.2.3 Validation
+L3575	p115	### 3.3 Braking
+L3577	p115	#### 3.3.1 Algorithm
+L3859	p124	#### 3.3.2 Weight Transfer Effect
+L4081	p129	#### 3.3.3 Validation
+L4273	p137	### 3.4 Cornering
+L4275	p137	#### 3.4.1 Algorithm
+L4532	p143	#### 3.4.2 Validation
+L4699	p150	## 4. LapSim
+L4701	p150	### 4.1 Introduction
+L4763	p152	### 4.2 Track Model
+L4765	p152	#### 4.2.1 Introduction
+L4787	p153	#### 4.2.2 Import Options
+L5522	p176	#### 4.2.3 Extra Processing/Filtering
+L5695	p181	#### 4.2.4 Apexes
+L5926	p190	### 4.3 Algorithm
+L5928	p190	#### 4.3.1 Main Concept
+L6102	p195	#### 4.3.2 Accelerate from Apexes
+L6269	p201	#### 4.3.3 Brake to Apexes
+L6347	p204	#### 4.3.4 Combine Traces
+L6395	p206	#### 4.3.5 Re-process braking points
+L6487	p210	#### 4.3.6 Weight Transfer Effect
+L6565	p213	### 4.4 Driven Channels & KPIs
+L6567	p213	#### 4.4.1 Driven Channels
+L6751	p219	#### 4.4.2 KPIs
+L6828	p221	### 4.5 Validation
+L7144	p232	## 5. Suspension Dynamics
+L7146	p232	### 5.1 Introduction
+L7244	p235	### 5.2 Rates Calculator
+L7250	p235	#### 5.2.1 Wheel & Heave Rate
+L7284	p236	#### 5.2.2 Pitch
+L7333	p237	#### 5.2.3 Roll
+L7418	p239	#### 5.2.4 Single Bump
+L7452	p240	#### 5.2.5 Example Results
+L7491	p241	### 5.3 Quarter Car Model & Damping Curves
+L7493	p241	#### 5.3.1 Quarter Car Model
+L7820	p250	#### 5.3.2 Damping Curves
+L8386	p267	### 5.4 Parameters’ Sweep
+L8599	p274	### 5.5 Virtual 7Post Rig
+L8601	p274	#### 5.5.1 Introduction
+L8641	p275	#### 5.5.2 Model
+L8882	p280	#### 5.5.3 Free Response
+L9284	p291	#### 5.5.4 Key Performance Indicators (KPIs)
+L9345	p293	#### 5.5.5 Parameters’ Sweep – Batch Run
+L9480	p298	## 6. Aerodynamic Map
+L9482	p298	### 6.1 Introduction
+L9484	p298	#### 6.1.1 AeroMap Necessity
+L9492	p298	#### 6.1.2 AeroMap Dual Nature
+L9593	p302	#### 6.1.3 AeroMap Source Data
+L9707	p307	### 6.2 Aero Viewer – AeroMap
+L9747	p308	#### 6.2.1 Main AeroMap
+L9823	p311	#### 6.2.2 Roll & Yaw Analysis
+L9915	p314	#### 6.2.3 Calculation Process – Specific Scenario
+L10045	p317	### 6.3 Aero Envelope
+L10059	p318	#### 6.3.1 Straight-line
+L10208	p323	#### 6.3.2 Cornering
+L10368	p327	#### 6.3.3 Static RH Decision
+L10554	p334	## 7. AeroMap to Simulation
+L10556	p334	### 7.1 Introduction
+L10580	p335	### 7.2 Straight-line Dynamics
+L10604	p336	#### 7.2.1 Anti-Features
+L10858	p342	#### 7.2.2 Longitudinal Acceleration Integration
+L10938	p344	### 7.3 Cornering Dynamics
+L10964	p345	#### 7.3.1 Roll and Yaw Angles Calculation
+L11007	p346	#### 7.3.2 AeroMap Integration to Cornering Algorithm
+L11029	p347	### 7.4 Simulation with AeroMap
+L11031	p347	#### 7.4.1 Introduction
+L11069	p349	#### 7.4.2 Acceleration
+L11421	p362	#### 7.4.3 Braking
+L11641	p370	#### 7.4.4 Cornering
+L11793	p375	#### 7.4.5 LapSim
+L12139	p388	## 8. Yaw Moment Diagram
+L12141	p388	### 8.1 Introduction
+L12143	p388	#### 8.1.1 Aim
+L12149	p388	#### 8.1.2 Importance and Definition
+L12227	p391	#### 8.1.3 Subsequent Sections
+L12249	p392	### 8.2 Magic Formula
+L12251	p392	#### 8.2.1 Introduction
+L12367	p396	#### 8.2.2 Modelling
+L12649	p403	### 8.3 Model
+L12651	p403	#### 8.3.1 Complexity Level
+L12659	p403	#### 8.3.2 Calculations
+L12973	p412	#### 8.3.3 Assumptions & Future Improvement
+L13061	p415	### 8.4 Algorithm & Results
+L13063	p415	#### 8.4.1 Introduction
+L13102	p416	#### 8.4.2 Algorithm
+L13216	p419	#### 8.4.3 Results
+L13394	p427	### 8.5 Key Performance Indicators – Analysis
+L13396	p427	#### 8.5.1 Grip & Balance
+L13466	p430	#### 8.5.2 Stability & Control
+L13575	p433	### 8.6 Parameters’ Sweep – Batch Run
+L13700	p438	## 9. Conclusions
+L13702	p438	#### 9.1.1 General
+L13706	p438	#### 9.1.2 Chapters Conclusions
+L13812	p442	#### 9.1.3 Summary
+L13834	p443	## 10. Table of Tables
+L13968	p446	## 11. Table of Equations
+L14235	p452	## 12. Table of Figures
+L14611	p460	## 13. Bibliography
