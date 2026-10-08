@@ -1,0 +1,78 @@
+Place,CarNum,Team,Time,Laps,Cones,OffCourse,OtherPenalty,AdjustedTime,TimeScore,LapsScore,EnduranceScore
+1,61,Univ of Connecticut,1418.853,10,1,,,1420.853,250.0,25,275
+2,6,Purdue Univ - W Lafayette,1414.567,10,1,1,,1436.567,241.2,25,266.2
+3,4,Kansas State Univ,1432.104,10,4,,,1440.104,239.2,25,264.2
+4,3,Georgia Institute of Technology,1461.891,10,,,,1461.891,227.4,25,252.4
+5,1,Universidad Politecnica de Valencia,1410.844,10,4,3,,1478.844,218.4,25,243.4
+6,8,Univ of Alabama - Tuscaloosa,1475.652,10,13,1,,1521.652,196.6,25,221.6
+7,109,Univ of Southern California,1500.049,10,1,1,,1522.049,196.4,25,221.4
+8,2,Texas A&M Univ,1513.076,10,2,1,,1537.076,189.1,25,214.1
+9,118,Univ of Calif - Berkeley,1535.546,10,1,,,1537.546,188.9,25,213.9
+10,76,Univ of Wisconsin - Platteville,1539.707,10,4,1,,1567.707,174.5,25,199.5
+11,140,Colorado School of Mines,1509.953,10,3,4,,1595.953,161.6,25,186.6
+12,107,University of Bologna,1556.041,10,2,2,,1600.041,159.8,25,184.8
+13,115,Univ of Missouri,1578.841,10,7,1,,1612.841,154.1,25,179.1
+14,111,Univ of Maryland - College Park,1577.768,10,,2,,1617.768,151.9,25,176.9
+15,14,Virginia Tech,1615.896,10,2,1,,1639.896,142.4,25,167.4
+16,120,Univ of Cincinnati,1668.512,10,2,2,,1712.512,112.8,25,137.8
+17,11,Escola de Engenharia de Sao Carlos,1573.645,10,3,7,,1719.645,110.0,25,135.0
+18,32,Università degli studi di Modena e Reggio Emilia,1443.942,10,2,14,,1727.942,106.8,25,131.8
+19,66,Univ of South Florida,1679.002,10,,3,,1739.002,102.6,25,127.6
+20,101,Hope College,1661.054,10,3,4,,1747.054,99.6,25,124.6
+21,89,Univ of Manitoba,1674.552,10,3,4,,1760.552,94.6,25,119.6
+22,87,Michigan Tech Univ,1558.722,10,4,9,15,1761.722,94.1,25,119.1
+23,42,South Dakota State Univ,1749.077,10,,1,,1769.077,91.4,25,116.4
+24,121,Wayne State Univ,1719.409,10,1,3,,1781.409,87.0,25,112.0
+25,40,Univ of British Columbia,1802.434,10,,1,,1822.434,72.5,25,97.5
+26,91,California State Univ - Northridge,1724.830,10,4,7,,1872.830,55.6,25,80.6
+27,92,Washington State Univ,1791.551,10,1,4,,1873.551,55.4,25,80.4
+28,125,Washington Univ - St Louis,1893.545,10,1,,,1895.545,48.3,25,73.3
+29,88,Univ of Texas - Austin,1664.667,10,2,12,,1908.667,44.1,25,69.1
+30,28,Univ of Colorado - Boulder,1880.593,10,3,2,,1926.593,38.5,25,63.5
+31,81,California State Poly Univ - Pomona,1686.878,10,3,12,,1932.878,36.6,25,61.6
+32,67,Saginaw Valley State Univ,1938.326,10,1,,,1940.326,34.3,25,59.3
+33,114,Pellissippi State Community College,1959.159,10,,1,,1979.159,22.8,25,47.8
+34,90,Colorado State University,1789.390,10,4,11,,2017.390,11.8,25,36.8
+35,122,Drexel Univ,1946.802,10,2,4,,2030.802,8.1,25,33.1
+36,34,US Naval Academy,1989.007,10,3,6,,2115.007,-,25,25
+37,18,Univ of Georgia,1897.259,10,3,5,120,2123.259,-,25,25
+38,46,Colorado Mesa University,1954.233,10,6,9,,2146.233,-,25,25
+39,49,Univ of Delaware,2038.537,10,3,7,6,2190.537,-,25,25
+40,68,Kettering Univ,2044.091,10,9,10,,2262.091,-,25,25
+41,36,Polytechnic Univ of Puerto Rico,2231.800,10,1,2,6,2279.800,-,25,25
+42,127,West Virginia Univ,2205.697,10,7,4,,2299.697,-,25,25
+43,65,Lawrence Technological Univ,2255.339,10,8,21,120,2811.339,-,25,25
+,128,North Carolina State Univ - Raleigh,1343.963,9,2,5,,DNF,-,24,24
+,48,Embry-Riddle Aero Univ - Daytona Beach,1369.406,9,1,,,DNF,-,24,24
+,45,Univ of Maine,1543.756,8,2,1,,DNF,-,21,21
+,31,Univ of Oklahoma,1584.705,8,5,4,,DNF,-,21,21
+,135,Liberty Univ,1330.594,7,,6,,DNF,-,18,18
+,30,Univ of Arizona,1438.284,7,,6,,DNF,-,18,18
+,102,Duke Univ,1484.053,7,,4,,DNF,-,18,18
+,105,Univ of Nebraska - Lincoln,934.384,6,,2,,DNF,-,15,15
+,39,Temple Univ,1119.428,6,3,2,,DNF,-,15,15
+,83,Vanderbilt Univ,1137.985,6,3,1,,DNF,-,15,15
+,25,Southern Illinois Univ - Edwardville,1302.201,6,1,6,,DNF,-,15,15
+,98,Tennessee Tech Univ,1972.798,6,1,1,,DNF,-,15,15
+,15,Sacramento State Univ,809.125,5,6,5,,DNF,-,12,12
+,20,Brown Univ,834.138,5,,,,DNF,-,12,12
+,113,Clemson Univ,869.116,5,1,2,,DNF,-,12,12
+,44,Univ of North Florida,891.672,5,,2,,DNF,-,12,12
+,54,Univ of Calif - Irvine,910.886,5,3,6,,DNF,-,12,12
+,86,Lehigh Univ,985.474,5,,1,,DNF,-,12,12
+,72,Univ of Hartford,993.708,5,4,5,,DNF,-,12,12
+,100,Univ of Kentucky,999.886,5,,,120,DNF,-,12,12
+,110,Univ of Saskatchewan,1007.332,5,1,6,14,DNF,-,12,12
+,62,Oklahoma State Univ,1059.977,5,,,,DNF,-,12,12
+,94,Northern Arizona Univ,1103.052,5,2,3,,DNF,-,12,12
+,79,South Dakota School of Mines & Tech,1215.887,5,8,6,,DNF,-,12,12
+,23,Univ of Ottawa,690.766,4,,,,DNF,-,9,9
+,22,New Jersey Institute of Technology,917.421,4,2,5,,DNF,-,9,9
+,60,Syracuse Univ,753.458,3,2,,,DNF,-,7,7
+,10,Univ of North Carolina - Charlotte,304.502,2,4,,120,DNF,-,5,5
+,84,Minnesota State University - Mankato,330.602,2,1,,,DNF,-,5,5
+,75,California State Univ - Chico,407.680,2,,2,,DNF,-,5,5
+,51,Univ of Central Florida,433.495,2,,1,120,DNF,-,5,5
+,106,Arizona State Univ - Tempe,152.441,1,,1,,DNF,-,3,3
+,29,Oakland University,191.598,1,,,,DNF,-,3,3
+,26,Missouri University of Science and Tech,0.000,<1,,,,DNF,-,1,1
