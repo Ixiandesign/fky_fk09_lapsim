@@ -66,6 +66,12 @@ The aero switches only matter with `aero_mode="sensitivity"` or `"map"`; in `"co
 Not switchable: the apex drag correction (4.3.1.2; without it the lap solver cannot hold apex speed), and the thesis assumptions that need new
 inputs rather than a switch (shift and clutch delay, throttle lift, camber gain, aero side force, varying Ackermann, rear toe, bump steer, compliance).
 
+In `settings.json` the `effects` section is first, and any setting that stops mattering under an assumption carries an `UNUSED IF ...` note.
+
+## Mode decoupled suspension (heave and roll shocks)
+
+`suspension.type_front` and `suspension.type_rear` choose `"corner"` (default: spring and damper at each wheel, plus ARB) or `"decoupled"` (one heave spring/damper and one roll spring/damper per axle; the roll element also takes warp). Each axle is described by a 2x2 wheel-space stiffness `[[(kh+kr)/2, (kh-kr)/2], [(kh-kr)/2, (kh+kr)/2]]`: `kh` is the heave wheel rate (both wheels move together), `kr` the roll wheel rate (wheels move oppositely). Corner shocks tie both to the corner spring (`kh = kw`, `kr = kw + ARB`). Decoupled sets `kh = k_heave / (2 MR_h^2)` and `kr = k_roll / (2 MR_r^2)`; the 2 is there because one element serves both wheels. Damping follows the same split (heave damper sees the mean wheel velocity, roll damper the half difference). Effects: heave stiffness (ride height, pitch) comes only from the heave element; roll stiffness, roll gradient and the front/rear roll split come only from the roll element and ignore the ARB; the 7-post matrix and damper curves use the same split. Pitch still depends on the heave elements, so it stays coupled to heave. With `"corner"` on both axles nothing changes from before.
+
 ## Placeholders
 
 Everything marked `PLACEHOLDER` in `lapsim.py` is made up: the 18 Pacejka tire parameters `a0 ... a17` (and the aligning moment `c0 ... c17`) and the aero map (`AeroMap.placeholder()`). The other defaults are the thesis baseline car (NTUA P19). Replace all of it with FK09 data.

@@ -159,6 +159,22 @@ class Suspension:
     zeta_front_hs: float = 0.9           # damping ratio, high speed
     zeta_rear_hs: float = 0.8
     comp_reb_hs: float = 0.5
+    # mode decoupled option: "corner" = a spring/damper (+ ARB) at each wheel, "decoupled" = one heave element and one
+    # roll element per axle. Placeholder values, replace with the real heave / roll springs.
+    type_front: str = "corner"           # "corner" or "decoupled"
+    type_rear: str = "corner"
+    heave_spring_front_lbs_in: float = 700.0   # lbs/inch, heave spring (acts on both wheels of the axle)
+    heave_spring_rear_lbs_in: float = 300.0
+    heave_motion_ratio_front: float = 1.08     # axle heave wheel travel / heave spring travel
+    heave_motion_ratio_rear: float = 1.06
+    roll_spring_front_lbs_in: float = 300.0    # lbs/inch, roll spring (also takes warp)
+    roll_spring_rear_lbs_in: float = 300.0
+    roll_motion_ratio_front: float = 1.0       # wheel travel in pure roll / roll spring travel
+    roll_motion_ratio_rear: float = 1.0
+    zeta_front_roll_ls: float = 4.0      # roll damper damping ratio, low speed (decoupled only)
+    zeta_rear_roll_ls: float = 3.2
+    zeta_front_roll_hs: float = 0.9      # roll damper damping ratio, high speed (decoupled only)
+    zeta_rear_roll_hs: float = 0.8
     # anti features, % (Table 7-1)
     anti_dive: float = 30.3              # front, braking
     anti_lift_rear: float = 13.5         # rear, braking
@@ -1673,39 +1689,62 @@ def plot_lap_map(result, column="v_kmh", label=None, cmap="turbo"):
 # =====================================================================================
 
 LBS_IN_TO_N_M = 175.126835      # eq 2-17
+SUSPENSION_TYPES = ("corner", "decoupled")
 
 
 def suspension_rates(car):
     """Rates calculator (thesis 5.2, Table 5-1). Returns a dict of the model suspension parameters."""
     s = car.suspension
     wd = car.weight_dist_front / 100
+    for ax in ("front", "rear"):
+        if getattr(s, f"type_{ax}") not in SUSPENSION_TYPES:
+            raise ValueError(f"suspension type_{ax} must be one of {SUSPENSION_TYPES}, got {getattr(s, f'type_{ax}')!r}")
+    series = lambda a, b: a * b / (a + b)
+    # an axle without an ARB (rate 0, motion ratio 0) just has no bar
+    kw_arb_f = s.arb_front / s.motion_ratio_arb_front ** 2 if s.motion_ratio_arb_front else 0.0
+    kw_arb_r = s.arb_rear / s.motion_ratio_arb_rear ** 2 if s.motion_ratio_arb_rear else 0.0
     k_spring_f, k_spring_r = s.spring_front_lbs_in * LBS_IN_TO_N_M, s.spring_rear_lbs_in * LBS_IN_TO_N_M
     kw_f, kw_r = k_spring_f / s.motion_ratio_front ** 2, k_spring_r / s.motion_ratio_rear ** 2          # eq 5-1
     kt_f, kt_r = s.tire_stiffness_front, s.tire_stiffness_rear
-    kh_f, kh_r = kw_f * kt_f / (kw_f + kt_f), kw_r * kt_r / (kw_r + kt_r)                                # eq 5-2
+
+    def axle_rates(ax, kw, kw_arb, k_spring, mr):
+        """Heave and roll wheel rates of one axle. Corner: both come from the corner spring (roll adds the ARB).
+        Decoupled: heave and roll come from their own elements; one element serves both wheels, hence the 2.
+        Returns kh_wheel, kr_wheel (used in the roll stiffness), the 2x2 wheel-space stiffness matrix of the axle
+        and the spring rate / motion ratio pair used by the dynamic pitch centre."""
+        if getattr(s, f"type_{ax}") == "corner":
+            k_axle = np.array([[kw + kw_arb, -kw_arb], [-kw_arb, kw + kw_arb]])                         # eq 5-37.3
+            return kw, kw + kw_arb, k_axle, k_spring, mr
+        mr_h, mr_r = getattr(s, f"heave_motion_ratio_{ax}"), getattr(s, f"roll_motion_ratio_{ax}")
+        kh_w = getattr(s, f"heave_spring_{ax}_lbs_in") * LBS_IN_TO_N_M / (2 * mr_h ** 2)
+        kr_w = getattr(s, f"roll_spring_{ax}_lbs_in") * LBS_IN_TO_N_M / (2 * mr_r ** 2)
+        k_axle = np.array([[kh_w + kr_w, kh_w - kr_w], [kh_w - kr_w, kh_w + kr_w]]) / 2
+        return kh_w, kr_w, k_axle, kh_w * mr_h ** 2, mr_h
+
+    kh_w_f, kr_w_f, k_axle_f, kp_f, mrp_f = axle_rates("front", kw_f, kw_arb_f, k_spring_f, s.motion_ratio_front)
+    kh_w_r, kr_w_r, k_axle_r, kp_r, mrp_r = axle_rates("rear", kw_r, kw_arb_r, k_spring_r, s.motion_ratio_rear)
+    kh_f, kh_r = series(kh_w_f, kt_f), series(kh_w_r, kt_r)                                              # eq 5-2
     # pitch (eq 5-3, 5-4, 5-5)
     pcx = car.pitch_centre_x
     k_pitch = math.pi / 90 * (pcx ** 2 * kh_f + (car.wheelbase - pcx) ** 2 * kh_r)                       # Nm/deg
     pitch_theta = car.mass * G * car.pitch_arm / k_pitch                                                 # deg/g
     # dynamic pitch centre exactly as printed in the thesis (reproduces Table 5-1)
-    pc_dynamic = pcx + pcx * (1 - s.motion_ratio_front ** 2 * k_spring_f / (k_spring_r * s.motion_ratio_rear ** 2))
+    pc_dynamic = pcx + pcx * (1 - mrp_f ** 2 * kp_f / (kp_r * mrp_r ** 2))
     # roll (eq 5-6 .. 5-10)
-    # an axle without an ARB (rate 0, motion ratio 0) just has no bar
-    kw_arb_f = s.arb_front / s.motion_ratio_arb_front ** 2 if s.motion_ratio_arb_front else 0.0
-    kw_arb_r = s.arb_rear / s.motion_ratio_arb_rear ** 2 if s.motion_ratio_arb_rear else 0.0
-    series = lambda a, b: a * b / (a + b)
-    k_roll_f = math.pi * car.front_track ** 2 / 360 * series(kw_f + kw_arb_f, kt_f)
-    k_roll_r = math.pi * car.rear_track ** 2 / 360 * series(kw_r + kw_arb_r, kt_r)
+    k_roll_f = math.pi * car.front_track ** 2 / 360 * series(kr_w_f, kt_f)
+    k_roll_r = math.pi * car.rear_track ** 2 / 360 * series(kr_w_r, kt_r)
     k_roll = k_roll_f + k_roll_r
     rc_cog = (1 - wd) * s.roll_centre_front + wd * s.roll_centre_rear                                    # eq 2-18
     roll_arm = car.cog_sm - rc_cog                                                                       # eq 2-19
     roll_phi = car.mass * G * roll_arm / k_roll                                                          # deg/g
     # single bump (eq 5-11): spring in parallel with (ARB in series with the opposite wheel spring).
     # The thesis writes the series term with reciprocals, so its Table 5-1 shows the heave rate instead.
-    sb_param_f = kw_f + series(kw_f, kw_arb_f)
-    sb_param_r = kw_r + series(kw_r, kw_arb_r)
+    sb_param_f = kw_f + series(kw_f, kw_arb_f) if s.type_front == "corner" else k_axle_f[0, 0]
+    sb_param_r = kw_r + series(kw_r, kw_arb_r) if s.type_rear == "corner" else k_axle_r[0, 0]
     return {
-        "wheel_rate_front": kw_f, "wheel_rate_rear": kw_r,
+        "wheel_rate_front": kh_w_f, "wheel_rate_rear": kh_w_r,       # heave wheel rate (= corner wheel rate for corner shocks)
+        "roll_wheel_rate_front": kr_w_f, "roll_wheel_rate_rear": kr_w_r,
+        "axle_stiffness_front": k_axle_f, "axle_stiffness_rear": k_axle_r,
         "heave_stiffness_front": kh_f, "heave_stiffness_rear": kh_r,
         "pitch_stiffness": k_pitch, "pitch_gradient": pitch_theta, "dynamic_pitch_centre": pc_dynamic,
         "arb_wheel_rate_front": kw_arb_f, "arb_wheel_rate_rear": kw_arb_r,
@@ -1722,7 +1761,7 @@ def quarter_car(car):
     kt = (s.tire_stiffness_front, s.tire_stiffness_rear)
     kw = (r["wheel_rate_front"], r["wheel_rate_rear"])
     kh = (r["heave_stiffness_front"], r["heave_stiffness_rear"])
-    kw_arb = (r["arb_wheel_rate_front"], r["arb_wheel_rate_rear"])
+    kr = (r["roll_wheel_rate_front"], r["roll_wheel_rate_rear"])      # corner: spring + ARB wheel rate, decoupled: roll element
     m_sm = (car.mass_sm_front, car.mass_sm_rear)
     m_nsm = (car.mass_nsm_front, car.mass_nsm_rear)
     out = {}
@@ -1731,7 +1770,7 @@ def quarter_car(car):
         out[f"natural_freq_sprung_{ax}"] = math.sqrt(kh[i] / (m_sm[i] / 2)) / (2 * math.pi)
         out[f"natural_freq_unsprung_{ax}"] = math.sqrt((kw[i] + kt[i]) / (m_nsm[i] / 2)) / (2 * math.pi)
         # critical damping [Ns/m] (eq 5-14 .. 5-17)
-        k_roll_param = (kw[i] + kw_arb[i]) * kt[i] / (kw[i] + kw_arb[i] + kt[i])
+        k_roll_param = kr[i] * kt[i] / (kr[i] + kt[i])
         out[f"crit_damping_heave_sprung_{ax}"] = 2 * math.sqrt(kh[i] * m_sm[i] / 2)
         out[f"crit_damping_heave_unsprung_{ax}"] = 2 * math.sqrt((kw[i] + kt[i]) * m_nsm[i] / 2)
         out[f"crit_damping_roll_sprung_{ax}"] = 2 * math.sqrt(k_roll_param * m_sm[i] / 2)
@@ -1744,14 +1783,19 @@ def damping_coefficients(car):
     s, q = car.suspension, quarter_car(car)
     out = {}
     for ax, z_ls, z_hs in (("front", s.zeta_front_ls, s.zeta_front_hs), ("rear", s.zeta_rear_ls, s.zeta_rear_hs)):
+        # roll damper: decoupled axles have their own damping ratios, corner shocks share the heave ones
+        if getattr(s, f"type_{ax}") == "decoupled":
+            zr_ls, zr_hs = getattr(s, f"zeta_{ax}_roll_ls"), getattr(s, f"zeta_{ax}_roll_hs")
+        else:
+            zr_ls, zr_hs = z_ls, z_hs
         # heave: low speed uses the sprung mass, high speed the unsprung mass; rebound = compression * ratio
         c_ls = q[f"crit_damping_heave_sprung_{ax}"] * z_ls
         c_hs = q[f"crit_damping_heave_unsprung_{ax}"] * z_hs
         out[f"heave_{ax}"] = {"compression_ls": c_ls, "compression_hs": c_hs,
                               "rebound_ls": c_ls * s.comp_reb_ls, "rebound_hs": c_hs * s.comp_reb_hs}
         # roll: rebound = compression / ratio
-        r_ls = q[f"crit_damping_roll_sprung_{ax}"] * z_ls
-        r_hs = q[f"crit_damping_roll_unsprung_{ax}"] * z_hs
+        r_ls = q[f"crit_damping_roll_sprung_{ax}"] * zr_ls
+        r_hs = q[f"crit_damping_roll_unsprung_{ax}"] * zr_hs
         out[f"roll_{ax}"] = {"compression_ls": r_ls, "compression_hs": r_hs,
                              "rebound_ls": r_ls / s.comp_reb_ls, "rebound_hs": r_hs / s.comp_reb_hs}
     return out
@@ -1820,7 +1864,9 @@ def quarter_car_response(car, axle="front", bump=0.01, t_end=1.5, motion="heave"
     m_b = (car.mass_sm_front if front else car.mass_sm_rear) / 2
     m_t = (car.mass_nsm_front if front else car.mass_nsm_rear) / 2
     k_b = r["wheel_rate_front"] if front else r["wheel_rate_rear"]
-    k_t = s.tire_stiffness_front if front else s.tire_stiffness_rear
+    if motion == "roll" and getattr(s, f"type_{axle}") == "decoupled":
+        k_b = r["roll_wheel_rate_front"] if front else r["roll_wheel_rate_rear"]
+    k_t =s.tire_stiffness_front if front else s.tire_stiffness_rear
 
     def f(t, y):
         x_b, x_t, v_b, v_t = y                      # displacements up positive
@@ -1885,10 +1931,8 @@ def seven_post_matrices(car):
                  car.mass_nsm_rear / 2, car.mass_nsm_rear / 2])
     A = np.array([[-1, -1, -1, -1], [-tf, tf, -tr, tr], [-lf, -lf, lr, lr],
                   [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], float)       # eq 5-36.5 (up positive)
-    kf, kr = r["wheel_rate_front"], r["wheel_rate_rear"]
-    krf, krr = r["arb_wheel_rate_front"], r["arb_wheel_rate_rear"]
-    K = np.array([[kf + krf, -krf, 0, 0], [-krf, kf + krf, 0, 0],
-                  [0, 0, kr + krr, -krr], [0, 0, -krr, kr + krr]])                       # eq 5-37.3
+    K = np.zeros((4, 4))                                   # eq 5-37.3, one 2x2 block per axle (corner or decoupled)
+    K[:2, :2], K[2:, 2:] = r["axle_stiffness_front"], r["axle_stiffness_rear"]
     s = car.suspension
     Kt = np.diag([0, 0, 0, s.tire_stiffness_front, s.tire_stiffness_front, s.tire_stiffness_rear, s.tire_stiffness_rear])
     return M, A, K, Kt, A.T
@@ -1915,10 +1959,25 @@ def seven_post_free_response(car, mode="heave", amplitude=None, t_end=2.0, dampe
     dc = damping_coefficients(car)
     c_linear = {ax: (dc[f"heave_{ax}"]["compression_hs"] + dc[f"heave_{ax}"]["rebound_hs"]) / 2 for ax in ("front", "rear")}
 
+    c_roll_linear = {ax: (dc[f"roll_{ax}"]["compression_hs"] + dc[f"roll_{ax}"]["rebound_hs"]) / 2 for ax in ("front", "rear")}
+
     def damper_vector(x_dot):
-        if damper == "linear":
-            return np.array([c_linear[axles[i]] * x_dot[i] for i in range(4)])
-        return np.array([float(damper_force(car, axles[i], x_dot[i])) for i in range(4)])
+        out = np.zeros(4)
+        for ax, (i, j) in (("front", (0, 1)), ("rear", (2, 3))):
+            if getattr(car.suspension, f"type_{ax}") == "corner":
+                if damper == "linear":
+                    out[[i, j]] = c_linear[ax] * x_dot[[i, j]]
+                else:
+                    out[[i, j]] = [float(damper_force(car, ax, x_dot[k])) for k in (i, j)]
+                continue
+            # decoupled: heave damper sees the mean wheel velocity, roll damper the half difference
+            v_s, v_a = (x_dot[i] + x_dot[j]) / 2, (x_dot[i] - x_dot[j]) / 2
+            if damper == "linear":
+                f_s, f_a = c_linear[ax] * v_s, c_roll_linear[ax] * v_a
+            else:
+                f_s, f_a = float(damper_force(car, ax, v_s)), float(damper_force(car, ax, v_a, "roll"))
+            out[i], out[j] = f_s + f_a, f_s - f_a
+        return out
 
     def f(t, y):
         z, zd = y[:7], y[7:]

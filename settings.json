@@ -1,50 +1,77 @@
 {
-  "_note": "Sign convention: left turn, left steer, left yaw and left lateral acceleration are positive; accelerating ax is positive, braking ax is negative; heights are positive up. Edit the numbers, then re-run the settings cell in lapsim.ipynb. SI units (kg, m, N) unless the name says otherwise. Names starting with _ are ignored. // comments are ignored. Field meanings and units: see the dataclasses at the top of lapsim.py. Delete a line to use the default.",
+  "_note": "Sign convention: left turn, left steer, left yaw and left lateral acceleration are positive; accelerating ax is positive, braking ax is negative; heights are positive up. Edit the numbers, then re-run the settings cell in lapsim.ipynb. SI units (kg, m, N) unless the name says otherwise. Names starting with _ are ignored. // comments are ignored. Field meanings and units: see the dataclasses at the top of lapsim.py. Delete a line to use the default. 'UNUSED IF ...' in a comment means the setting has no effect when that assumption (an effects switch below, aero_mode, or a suspension type) is set that way.",
+  "effects": {                             // ASSUMPTION SWITCHES. true = effect modelled, false = ignored
+    "aero_ride_height": true,              // ride height moves with load (else static). false: heave stiffness (springs) no longer changes aero. Only matters if aero_mode is not "constant"
+    "aero_anti_features": true,            // anti-dive/lift/squat take part of weight transfer. false: anti_dive, anti_lift_*, anti_squat UNUSED
+    "aero_roll": true,                     // body roll changes aero. false: aero_sens_roll UNUSED. Only matters if aero_mode is not "constant"
+    "aero_yaw": true,                      // yaw (side slip) changes aero. false: aero_sens_yaw UNUSED. Only matters if aero_mode is not "constant"
+    "aero_downforce": true,                // car makes downforce. false: cz_total, aero_balance_front UNUSED
+    "aero_drag": true,                     // car makes aero drag. false: cx_total UNUSED
+    "rolling_resistance": true,            // tires have rolling resistance. false: tire.rolling_resistance UNUSED
+    "longitudinal_weight_transfer": true,  // load shifts front/rear under accel/braking
+    "lateral_weight_transfer": false,      // load shifts left/right in corners. false: in the lap solve the front/rear roll stiffness split (mechanical balance) and cog_nsm_front/rear are UNUSED (the yaw moment diagram still uses them; roll centres still set the roll gradient)
+    "tire_load_sensitivity": true,         // grip changes with tire load. false: mux_sens, mux_norm_kg, muy_sens, muy_norm_kg and correlation.load_sensitivity UNUSED
+    "tire_camber": true                    // camber changes Pacejka grip. false: camber_front, camber_rear UNUSED
+  },
   "tire": {
     "radius": 0.199,                       // m, loaded tire radius
-    "rolling_resistance": 0.03,            // rolling resistance coefficient (positive number, opposes motion)
+    "rolling_resistance": 0.03,            // rolling resistance coefficient (positive number, opposes motion). UNUSED IF effects.rolling_resistance is false
     "mux": 1.2,                            // longitudinal friction coefficient
-    "mux_norm_kg": 50.0,                   // kg, tire load where mux was measured
-    "mux_sens": 0.0001,                    // mux loss per N of extra load (positive = grip drops as load rises)
-    "muy": 1.45,                           // lateral friction coefficient (simple model)
-    "muy_norm_kg": 50.0,                   // kg, tire load where muy was measured
-    "muy_sens": 0.0001,                    // muy loss per N of extra load (positive = grip drops as load rises)
+    "mux_norm_kg": 50.0,                   // kg, tire load where mux was measured. UNUSED IF effects.tire_load_sensitivity is false
+    "mux_sens": 0.0001,                    // mux loss per N of extra load (positive = grip drops as load rises). UNUSED IF effects.tire_load_sensitivity is false
+    "muy": 1.45,                           // lateral friction coefficient (simple model). UNUSED IF lateral_model is "pacejka"
+    "muy_norm_kg": 50.0,                   // kg, tire load where muy was measured. UNUSED IF lateral_model is "pacejka" or effects.tire_load_sensitivity is false
+    "muy_sens": 0.0001,                    // muy loss per N of extra load (positive = grip drops as load rises). UNUSED IF lateral_model is "pacejka" or effects.tire_load_sensitivity is false
     "lateral_model": "pacejka",            // "pacejka" or "simple"
     "cornering_stiffness_front": 1381.0,   // N/deg, front axle (positive number)
     "cornering_stiffness_rear": 1421.0,    // N/deg, rear axle (positive number)
-    "a": [1.5, -100.0, 1600.0, 1000.0, 1.5, 0.02, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.003, 0.0, 0.0],   // Pacejka lateral force a0..a17 (Fz in kN, slip angle and camber in deg)
+    "a": [1.5, -100.0, 1600.0, 1000.0, 1.5, 0.02, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.003, 0.0, 0.0],   // Pacejka lateral force a0..a17 (Fz in kN, slip angle and camber in deg). UNUSED IF lateral_model is "simple"
     "c": [2.4, 0.0, -50.0, 0.0, -30.0, 0.0, 0.0, 0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]            // Pacejka self-aligning moment c0..c17 (Fz in kN, slip angle and camber in deg)
   },
   "suspension": {
+    "type_front": "corner",                // "corner" = spring + damper (+ ARB) at each wheel, "decoupled" = one heave element + one roll element on the axle (mode decoupled)
+    "type_rear": "corner",                 // same choice for the rear axle
     "toe_front": 1.0,                      // deg, static toe (positive = toe-out, negative = toe-in, same on both wheels)
-    "camber_front": -2.0,                   // deg, static camber (negative = top of wheel tilted in, SAE; fed straight into Pacejka)
-    "camber_rear": -2.0,                    // deg, static camber (negative = top of wheel tilted in, SAE)
+    "camber_front": -2.0,                   // deg, static camber (negative = top of wheel tilted in, SAE; fed straight into Pacejka). UNUSED IF effects.tire_camber is false
+    "camber_rear": -2.0,                    // deg, static camber (negative = top of wheel tilted in, SAE). UNUSED IF effects.tire_camber is false
     "roll_centre_front": 0.02667,           // m, roll centre height (positive = above ground)
     "roll_centre_rear": 0.03302,             // m, roll centre height (positive = above ground)
-    "roll_gradient": 0.65,                 // deg/g, used if computed one is off (positive number = body rolls outward)
-    "use_computed_roll_gradient": true,    // true = calculate roll gradient from spring/ARB rates
+    "roll_gradient": 0.65,                 // deg/g, used if computed one is off (positive number = body rolls outward). UNUSED IF use_computed_roll_gradient is true
+    "use_computed_roll_gradient": true,    // true = calculate roll gradient from spring/ARB (or roll element) rates
     "ackermann_ratio": 1.0,                // outer / inner steer angle (1 = parallel steer, >1 = outer wheel steers more)
-    "motion_ratio_front": 1.08,            // wheel / spring
-    "motion_ratio_rear": 1.0,             // wheel / spring
-    "spring_front_lbs_in": 350.0,          // lbs/in, per corner
-    "spring_rear_lbs_in": 350.0,           // lbs/in, per corner
+    "motion_ratio_front": 1.08,            // wheel / spring. UNUSED IF type_front is "decoupled"
+    "motion_ratio_rear": 1.0,             // wheel / spring. UNUSED IF type_rear is "decoupled"
+    "spring_front_lbs_in": 350.0,          // lbs/in, per corner. UNUSED IF type_front is "decoupled"
+    "spring_rear_lbs_in": 350.0,           // lbs/in, per corner. UNUSED IF type_rear is "decoupled"
     "tire_stiffness_front": 95000.0,       // N/m, per corner
     "tire_stiffness_rear": 95000.0,        // N/m, per corner
-    "arb_front": 36450.0,                  // N/m, anti-roll bar rate
-    "arb_rear": 0.0,                  // N/m, anti-roll bar rate
-    "motion_ratio_arb_front": 1.07,        // ARB wheel / bar motion
-    "motion_ratio_arb_rear": 0.0,         // ARB wheel / bar motion
+    "arb_front": 36450.0,                  // N/m, anti-roll bar rate. UNUSED IF type_front is "decoupled" (the roll spring replaces the bar)
+    "arb_rear": 0.0,                  // N/m, anti-roll bar rate. UNUSED IF type_rear is "decoupled"
+    "motion_ratio_arb_front": 1.07,        // ARB wheel / bar motion. UNUSED IF type_front is "decoupled"
+    "motion_ratio_arb_rear": 0.0,         // ARB wheel / bar motion. UNUSED IF type_rear is "decoupled"
+    "heave_spring_front_lbs_in": 700.0,    // lbs/in, front heave spring, one per axle, acts on both wheels. UNUSED IF type_front is "corner". Placeholder, replace with real value
+    "heave_spring_rear_lbs_in": 700.0,     // lbs/in, rear heave spring. UNUSED IF type_rear is "corner". Placeholder
+    "heave_motion_ratio_front": 1.08,      // axle heave wheel travel / heave spring travel. UNUSED IF type_front is "corner"
+    "heave_motion_ratio_rear": 1.0,        // axle heave wheel travel / heave spring travel. UNUSED IF type_rear is "corner"
+    "roll_spring_front_lbs_in": 300.0,     // lbs/in, front roll spring (also takes warp). UNUSED IF type_front is "corner". Placeholder
+    "roll_spring_rear_lbs_in": 300.0,      // lbs/in, rear roll spring. UNUSED IF type_rear is "corner". Placeholder
+    "roll_motion_ratio_front": 1.0,        // wheel travel in pure roll / roll spring travel. UNUSED IF type_front is "corner"
+    "roll_motion_ratio_rear": 1.0,         // wheel travel in pure roll / roll spring travel. UNUSED IF type_rear is "corner"
     "knee_speed_mm_s": 12.0,               // mm/s, damper low/high speed switch
-    "zeta_front_ls": 4.0,                  // damping ratio, low speed
-    "zeta_rear_ls": 3.2,                   // damping ratio, low speed
+    "zeta_front_ls": 4.0,                  // damping ratio, low speed (heave damper if decoupled)
+    "zeta_rear_ls": 3.2,                   // damping ratio, low speed (heave damper if decoupled)
     "comp_reb_ls": 1.5,                    // compression / rebound, low speed
-    "zeta_front_hs": 0.9,                  // damping ratio, high speed
-    "zeta_rear_hs": 0.8,                   // damping ratio, high speed
+    "zeta_front_hs": 0.9,                  // damping ratio, high speed (heave damper if decoupled)
+    "zeta_rear_hs": 0.8,                   // damping ratio, high speed (heave damper if decoupled)
     "comp_reb_hs": 0.5,                    // compression / rebound, high speed
-    "anti_dive": 15.0,                     // %, front, braking (positive = share taken by suspension links, 0-100)
-    "anti_lift_rear": 0.0,                // %, rear, braking (positive = share taken by suspension links, 0-100)
-    "anti_lift_front": 0.0,                // %, front, accelerating (positive = share taken by suspension links, 0-100)
-    "anti_squat": 7.5                     // %, rear, accelerating (positive = share taken by suspension links, 0-100)
+    "zeta_front_roll_ls": 4.0,             // roll damper damping ratio, low speed. UNUSED IF type_front is "corner" (roll then uses zeta_front_ls)
+    "zeta_rear_roll_ls": 3.2,              // roll damper damping ratio, low speed. UNUSED IF type_rear is "corner"
+    "zeta_front_roll_hs": 0.9,             // roll damper damping ratio, high speed. UNUSED IF type_front is "corner"
+    "zeta_rear_roll_hs": 0.8,              // roll damper damping ratio, high speed. UNUSED IF type_rear is "corner"
+    "anti_dive": 15.0,                     // %, front, braking (positive = share taken by suspension links, 0-100). UNUSED IF effects.aero_anti_features is false or car.aero_mode is "constant"
+    "anti_lift_rear": 0.0,                // %, rear, braking (positive = share taken by suspension links, 0-100). UNUSED IF effects.aero_anti_features is false or car.aero_mode is "constant"
+    "anti_lift_front": 0.0,                // %, front, accelerating (positive = share taken by suspension links, 0-100). UNUSED IF effects.aero_anti_features is false or car.aero_mode is "constant"
+    "anti_squat": 7.5                     // %, rear, accelerating (positive = share taken by suspension links, 0-100). UNUSED IF effects.aero_anti_features is false or car.aero_mode is "constant"
   },
   "brakes": {
     "bias_front": 65.0,                    // % of brake force on front
@@ -65,21 +92,8 @@
     "mux_accel": 1.0,                      // x longitudinal grip, accelerating
     "mux_brake": 1.0,                      // x longitudinal grip, braking
     "muy": 1.0,                            // x lateral grip
-    "load_sensitivity": 1.0,               // x tire load sensitivity
+    "load_sensitivity": 1.0,               // x tire load sensitivity. UNUSED IF effects.tire_load_sensitivity is false
     "endurance_pace": 1.599                // x every endurance lap time; set so endurance places (20th of 44 finishers) where the sim places in acceleration and autocross (about the 43rd percentile of the 2026 field)
-  },
-  "effects": {                             // true = effect modelled, false = ignored
-    "aero_ride_height": true,              // ride height moves with load (else static)
-    "aero_anti_features": true,            // anti-dive/lift/squat take part of weight transfer
-    "aero_roll": true,                     // body roll changes aero
-    "aero_yaw": true,                      // yaw (side slip) changes aero
-    "aero_downforce": true,                // car makes downforce
-    "aero_drag": true,                     // car makes aero drag
-    "rolling_resistance": true,            // tires have rolling resistance
-    "longitudinal_weight_transfer": true,  // load shifts front/rear under accel/braking
-    "lateral_weight_transfer": false,      // load shifts left/right in corners
-    "tire_load_sensitivity": true,         // grip changes with tire load
-    "tire_camber": true                    // camber changes Pacejka grip
   },
   "car": {
     "mass": 250.0,                         // kg, including driver
@@ -93,27 +107,27 @@
     "steer_ratio": 3.74,                   // steering wheel / front wheels
     "mass_nsm_front": 20.0,                // kg, front unsprung mass
     "mass_nsm_rear": 22.0,                 // kg, rear unsprung mass
-    "cog_nsm_front": 0.26,                 // m, front unsprung CoG height (positive = above ground)
-    "cog_nsm_rear": 0.28,                  // m, rear unsprung CoG height (positive = above ground)
+    "cog_nsm_front": 0.26,                 // m, front unsprung CoG height (positive = above ground). UNUSED IF effects.lateral_weight_transfer is false (lap solve only)
+    "cog_nsm_rear": 0.28,                  // m, rear unsprung CoG height (positive = above ground). UNUSED IF effects.lateral_weight_transfer is false (lap solve only)
     "cog_sm": 0.324,                       // m, sprung mass CoG height (positive = above ground)
     "izz": 80.0,                           // kg m^2, yaw inertia
-    "ixx": 15.0,                           // kg m^2, roll inertia
-    "iyy": 60.0,                           // kg m^2, pitch inertia
+    "ixx": 15.0,                           // kg m^2, roll inertia (7-post only)
+    "iyy": 60.0,                           // kg m^2, pitch inertia (7-post only)
     "pitch_centre_x": 0.931,               // m, front axle to pitch centre (positive = rearward of front axle)
-    "aero_mode": "constant",               // "constant", "sensitivity" or "map"
-    "cz_total": 4.5,                       // total downforce coefficient (positive number = pushes car down)
-    "cx_total": 1.75,                      // total drag coefficient (positive number = opposes motion)
+    "aero_mode": "constant",               // "constant", "sensitivity" or "map". "constant": static_rh_*, aero_sens_*, rh_limit_mm, aero_map and the anti_* settings UNUSED, and heave stiffness does not change lap time
+    "cz_total": 4.5,                       // total downforce coefficient (positive number = pushes car down). UNUSED IF effects.aero_downforce is false or aero_mode is "map"
+    "cx_total": 1.75,                      // total drag coefficient (positive number = opposes motion). UNUSED IF effects.aero_drag is false or aero_mode is "map"
     "frontal_area": 1.0,                   // m^2
-    "aero_balance_front": 45.0,            // % of downforce on front
+    "aero_balance_front": 45.0,            // % of downforce on front. UNUSED IF effects.aero_downforce is false or aero_mode is "map"
     "air_density": 1.225,                  // kg/m^3
-    "static_rh_front": 35.0,               // mm, static ride height (positive = clearance above ground)
-    "static_rh_rear": 45.0,                // mm, static ride height (positive = clearance above ground)
-    "aero_sens_roll": -5.0,                // % downforce per deg roll (sensitivity mode) (negative = downforce drops as roll grows)
-    "aero_sens_yaw": -0.8,                 // % downforce per deg yaw (sensitivity mode) (negative = downforce drops as yaw grows)
-    "rh_limit_mm": 5.0,                    // mm, below this = bottoming
+    "static_rh_front": 35.0,               // mm, static ride height (positive = clearance above ground). UNUSED IF aero_mode is "constant"
+    "static_rh_rear": 45.0,                // mm, static ride height (positive = clearance above ground). UNUSED IF aero_mode is "constant"
+    "aero_sens_roll": -5.0,                // % downforce per deg roll (sensitivity mode) (negative = downforce drops as roll grows). UNUSED IF aero_mode is not "sensitivity" or effects.aero_roll is false
+    "aero_sens_yaw": -0.8,                 // % downforce per deg yaw (sensitivity mode) (negative = downforce drops as yaw grows). UNUSED IF aero_mode is not "sensitivity" or effects.aero_yaw is false
+    "rh_limit_mm": 5.0,                    // mm, below this = bottoming. UNUSED IF aero_mode is "constant"
     "engine_curve": "ref/dyno_curves.csv", // dyno CSV (RPM, Torque [ft-lb], 6th gear at the wheels): smoothed and used instead of engine_rpm / engine_torque; null = use those
-    "engine_rpm": [4500, 5500, 6500, 7500, 8500, 9500, 10500],   // rpm points of torque curve (only used if engine_curve is null)
-    "engine_torque": [46, 50, 52, 55, 56, 54, 48],               // Nm at each rpm (only used if engine_curve is null)
+    "engine_rpm": [4500, 5500, 6500, 7500, 8500, 9500, 10500],   // rpm points of torque curve. UNUSED IF engine_curve is set
+    "engine_torque": [46, 50, 52, 55, 56, 54, 48],               // Nm at each rpm. UNUSED IF engine_curve is set
     "engine_includes_losses": true,        // true = torque curve already includes drivetrain losses (measured at the wheels), so drivetrain_efficiency is not applied to it
     "engine_scale": 1.0,                   // x engine torque
     "rpm_idle": 2000.0,                    // rpm
@@ -123,7 +137,7 @@
     "primary_ratio": 2.11111111,           // engine to gearbox (38/18)
     "final_ratio": 3.81818182,             // chain/final drive (42/11)
     "gear_ratios": [2.75, 2.0, 1.67, 1.44, 1.30434, 1.2083],     // 1st to 6th
-    "aero_map": "placeholder",             // "placeholder", CSV path, or null (used in "map" mode)
+    "aero_map": "placeholder",             // "placeholder", CSV path, or null. UNUSED IF aero_mode is not "map"
     "_aero_map": "\"placeholder\" (made-up map), a path to a CSV (columns frh, rrh, roll, yaw, czt, ab, cx), or null. Used when aero_mode is \"map\"."
   }
 }
