@@ -11,13 +11,14 @@ uv sync
 uv run jupyter lab lapsim.ipynb
 ```
 
-Edit the car in part 2 of the notebook, then Run All Cells.
+Edit the car in `settings.json` (tire, suspension, brakes, correlation, effects, car), then Run All Cells. `lapsim.load_car()` reads it.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| `lapsim.ipynb` | The notebook: edit the car, run any part of the model, see times, points, goals and what-ifs |
+| `settings.json` | Every car setting and effect switch, read by part 2 of the notebook |
+| `lapsim.ipynb` | The notebook: run any part of the model, see times, points, goals and what-ifs |
 | `lapsim.py` | All the code in one file, in thesis order (see the list at the top of the file) |
 | `tracks/autocross.csv`, `tracks/endurance.csv` | Track centerlines (x, y in metres) traced from the maps in `ref/track images/` |
 | `tracks/digitize_tracks.py` | The script that traced them; `digitize_check.png` shows the result over the map |
@@ -44,6 +45,26 @@ Edit the car in part 2 of the notebook, then Run All Cells.
 
 `thesis_checks()` compares the code with the numbers printed in the thesis (rates, damping, brake pressure, skidpad time, 7-post KPIs):
 all agree within 1 %.
+
+## Effects and assumptions (`lapsim.Effects`)
+
+Switches on `Car.effects`, the `effects` section of `settings.json`. `true` = modelled, `false` = neglected. Defaults are the thesis model, so nothing changes until
+you flip one. `effects_study(car, run)` flips them one at a time and shows what each is worth.
+
+| Switch | Default | Off means | Thesis |
+|---|---|---|---|
+| `aero_ride_height` | on | ride heights stay at the static value; the suspension does not move the aero | 6.3, 7.2 |
+| `aero_anti_features` | on | all weight transfer goes through the heave springs (no anti-dive / lift / squat) | 7.2.1 |
+| `aero_roll`, `aero_yaw` | on | roll / yaw taken as zero in the aero | 7.3, 8.3.3 |
+| `aero_downforce`, `aero_drag`, `rolling_resistance` | on | that force is zero | 2.3, 2.8 |
+| `longitudinal_weight_transfer` | on | no load moves between axles under acceleration / braking | 3.2.2, 3.3.2 |
+| `lateral_weight_transfer` | **off** | on: load moves to the outer tires in corners (roll centres, ARBs), so load sensitivity costs grip. The thesis lap sim does not do this | 8.3.2.3 |
+| `tire_load_sensitivity` | on | constant mu (measured value, or the value at average static tire load for Pacejka) | 2.4 |
+| `tire_camber` | on | static camber ignored in the Pacejka model | 8.3.3 |
+
+The aero switches only matter with `aero_mode="sensitivity"` or `"map"`; in `"constant"` mode the aero does not depend on the car state.
+Not switchable: the apex drag correction (4.3.1.2; without it the lap solver cannot hold apex speed), and the thesis assumptions that need new
+inputs rather than a switch (shift and clutch delay, throttle lift, camber gain, aero side force, varying Ackermann, rear toe, bump steer, compliance).
 
 ## Placeholders
 

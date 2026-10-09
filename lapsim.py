@@ -5,7 +5,7 @@ Everything is in SI units (m, s, N, kg, m/s) unless a name says otherwise.
 Section numbers in the comments (2.8, 4.3, ...) refer to the thesis.
 
 Contents (in thesis order)
-     1. Vehicle parameters        Tire (Pacejka 18 params), Suspension, Brakes, Correlation, Car     (ch. 2)
+     1. Vehicle parameters        Tire (Pacejka 18 params), Suspension, Brakes, Correlation, Effects, Car   (ch. 2)
      2. Aero                      constant / roll-yaw sensitivity / full aero map with convergence   (2.3, ch. 6, 7)
      3. Forces model              vertical loads, weight transfer, tire limits, engine, drag         (2.4 - 2.8)
      4. Powertrain extras         shifting model                                                     (2.7)
@@ -20,8 +20,9 @@ Contents (in thesis order)
     13. Yaw moment diagram        full-car steady state, Pacejka, KPIs                               (ch. 8)
     14. Correlation               stepwise correction factors, check against the thesis tables       (4.5)
     15. Competition points        rules formulas + 2026 results                                      (FSAE rules D.9 - D.12)
-    16. Design tools              goal times, what-if
+    16. Design tools              goal times, what-if, effects study
 """
+import json
 import math
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -192,6 +193,98 @@ class Correlation:
 
 
 @dataclass
+class Effects:
+    """Switches for the physical effects and the simplifying assumptions of the thesis. True = the effect is modelled.
+
+    The defaults reproduce the thesis model exactly. Turn an effect off to see how much it is worth, or to run the
+    simpler model the thesis describes. Change them one at a time with `effects_study`.
+
+    Aero (the first four only matter when aero_mode is "sensitivity" or "map"; thesis 6.3, 7.2, 7.3, 8.3.3)
+        aero_ride_height   : the ride heights move with downforce and weight transfer. False = static ride height.
+        aero_anti_features : anti-dive / lift / squat take part of the weight transfer out of the springs (7.2.1). False =
+                             100 % of it goes through the heave springs (the simplified ride height of chapter 4).
+        aero_roll          : body roll changes the aero. False = roll is taken as zero.
+        aero_yaw           : chassis side slip (yaw) changes the aero. False = yaw is taken as zero.
+    Aero and resistance (any aero_mode)
+        aero_downforce     : the car makes downforce (False = CzT of zero: no downforce, no ride height change)
+        aero_drag          : the car makes aero drag
+        rolling_resistance : tires have rolling resistance
+    Loads
+        longitudinal_weight_transfer : load moves between the axles under acceleration and braking (3.2.2, 3.3.2).
+        lateral_weight_transfer      : load moves between the left and right tires in a corner, using the roll centres and
+                                       roll stiffness (8.3.2.3). Off in the thesis lap simulation (it only does the
+                                       longitudinal part, 2.8); on, load sensitivity then costs grip in every corner.
+    Tires
+        tire_load_sensitivity : grip changes with tire load. False = constant mu: the measured value for the simple
+                                model, the value at the average static tire load (mass g / 4) for Pacejka.
+        tire_camber           : the static camber changes the Pacejka grip. False = zero camber.
+    The apex drag correction (4.3.1.2) has no switch: without it the car cannot hold the apex speed against drag and the
+    lap solver breaks down (lap times come out far too fast).
+    """
+    aero_ride_height: bool = True
+    aero_anti_features: bool = True
+    aero_roll: bool = True
+    aero_yaw: bool = True
+    aero_downforce: bool = True
+    aero_drag: bool = True
+    rolling_resistance: bool = True
+    longitudinal_weight_transfer: bool = True
+    lateral_weight_transfer: bool = False
+    tire_load_sensitivity: bool = True
+    tire_camber: bool = True
+
+
+def _from_settings(cls, section, name, path):
+    """Build a dataclass from one settings.json section. Names starting with _ are notes. A name that is not a
+    field is an error (probably a typo); lists become tuples; missing fields keep their default."""
+    section = {k: v for k, v in section.items() if not k.startswith("_")}
+    unknown = set(section) - set(cls.__dataclass_fields__)
+    if unknown:
+        raise ValueError(f"{path}: unknown {name} settings {sorted(unknown)}; valid names: {list(cls.__dataclass_fields__)}")
+    return cls(**{k: tuple(v) if isinstance(v, list) else v for k, v in section.items()})
+
+
+def load_effects(path=HERE / "settings.json"):
+    """Read the "effects" section of settings.json into an Effects. A value that is not true / false is an error."""
+    with open(path, encoding="utf8") as f:
+        section = json.load(f).get("effects", {})
+    bad = {k: v for k, v in section.items() if not k.startswith("_") and not isinstance(v, bool)}
+    if bad:
+        raise ValueError(f"{path}: effects must be true or false, got {bad}")
+    return _from_settings(Effects, section, "effects", path)
+
+
+def load_car(path=HERE / "settings.json"):
+    """Build the whole Car from settings.json: sections "tire", "suspension", "brakes", "correlation", "effects" and "car".
+
+    In "car", aero_map is "placeholder" (the made-up AeroMap), the path of a CSV for AeroMap.from_csv, or null.
+    """
+    with open(path, encoding="utf8") as f:
+        settings = json.load(f)
+    unknown = {k for k in settings if not k.startswith("_")} - {"tire", "suspension", "brakes", "correlation", "effects", "car"}
+    if unknown:
+        raise ValueError(f"{path}: unknown sections {sorted(unknown)}")
+    car = {k: v for k, v in settings.get("car", {}).items() if not k.startswith("_")}
+    for sub in ("tire", "suspension", "brakes", "correlation"):
+        if sub in car:
+            raise ValueError(f"{path}: put {sub} settings in the \"{sub}\" section, not in \"car\"")
+    aero_map = car.pop("aero_map", None)
+    if aero_map == "placeholder":
+        aero_map = AeroMap.placeholder()
+    elif isinstance(aero_map, str):
+        aero_map = AeroMap.from_csv(Path(path).parent / aero_map)
+    elif aero_map is not None:
+        raise ValueError(f'{path}: aero_map must be "placeholder", a CSV path or null')
+    return _from_settings(Car, {
+        **car, "aero_map": aero_map,
+        "tire": _from_settings(Tire, settings.get("tire", {}), "tire", path),
+        "suspension": _from_settings(Suspension, settings.get("suspension", {}), "suspension", path),
+        "brakes": _from_settings(Brakes, settings.get("brakes", {}), "brakes", path),
+        "correlation": _from_settings(Correlation, settings.get("correlation", {}), "correlation", path),
+        "effects": load_effects(path)}, "car", path)
+
+
+@dataclass
 class Car:
     """All car parameters. Defaults = thesis baseline car (Tables 2-1, 2-2, 2-5). Replace with FK09 data."""
     # --- general (mass includes the driver), Table 2-1 ---
@@ -242,6 +335,7 @@ class Car:
     suspension: Suspension = field(default_factory=Suspension)
     brakes: Brakes = field(default_factory=Brakes)
     correlation: Correlation = field(default_factory=Correlation)
+    effects: Effects = field(default_factory=Effects)
 
     def __post_init__(self):
         wd = self.weight_dist_front / 100
@@ -252,6 +346,7 @@ class Car:
         self.mass_sm_front = self.mass_sm * wd
         self.mass_sm_rear = self.mass_sm - self.mass_sm_front
         self.rates = suspension_rates(self)           # section 11
+        self._lat_wt = tuple(float(w) for w in lateral_weight_transfer(self, 1.0)[:2])   # N per m/s^2 of ay, front / rear axle (linear in ay)
         self._aero_tab = None                         # filled in by _build_aero_table for the "sensitivity" and "map" modes
         self._aero_const = (self.cz_total * self.correlation.aero, self.aero_balance_front, self.cx_total * self.correlation.aero)
         self._build_tire_tables()
@@ -259,13 +354,19 @@ class Car:
         self._build_tractive_force()                  # section 3
         self._build_corner_tables()                   # section 7
 
+    def camber(self, axle):
+        """Camber [deg] used in the tire model: the static camber, or zero if effects.tire_camber is off."""
+        if not self.effects.tire_camber:
+            return 0.0
+        return self.suspension.camber_front if axle == "front" else self.suspension.camber_rear
+
     # ---- tire friction tables (peak lateral mu vs load on one tire) ----
     def _build_tire_tables(self):
         self._fz_tire = np.linspace(50.0, 6000.0, 120)
         t = self.tire
         if t.lateral_model == "pacejka":
-            self._muy_front = pacejka_peak_mu(t.a, self._fz_tire, self.suspension.camber_front)
-            self._muy_rear = pacejka_peak_mu(t.a, self._fz_tire, self.suspension.camber_rear)
+            self._muy_front = pacejka_peak_mu(t.a, self._fz_tire, self.camber("front"))
+            self._muy_rear = pacejka_peak_mu(t.a, self._fz_tire, self.camber("rear"))
         # cornering stiffness of each axle, N/deg (for the steering model, eq 2-53)
         self.cf = t.cornering_stiffness_front
         self.cr = t.cornering_stiffness_rear
@@ -441,18 +542,26 @@ def _aero_state_arrays(car, v, ax, ay, iterations=100, yaw=None):
     Successive substitution: ride height -> aero map -> downforce -> ride height, until the ride heights stop
     changing. Ride height = static - downforce / heave stiffness - weight transfer through the springs / heave
     stiffness, where only the share (1 - anti) of the weight transfer goes through the springs (eq 7-8, 7-9).
+    The switches in car.effects turn the ride height, anti feature, roll and yaw effects off.
     Returns cz, ab, cx, frh, rrh, bottoming, over_map (all arrays).
     """
     v, ax, ay = np.broadcast_arrays(np.asarray(v, float), np.asarray(ax, float), np.asarray(ay, float))
     corr = car.correlation.aero
+    fx = car.effects
     roll = roll_angle(car, np.abs(ay))
     if yaw is None:
         yaw = steering_angles(car, np.abs(ay))[1]       # chassis side slip from the steering model
     yaw = np.abs(yaw)
+    if not fx.aero_roll:
+        roll = np.zeros_like(roll)
+    if not fx.aero_yaw:
+        yaw = np.zeros(v.shape)
     kh_f = car.rates["heave_stiffness_front"] / 1000       # N/mm
     kh_r = car.rates["heave_stiffness_rear"] / 1000
     anti_f, anti_r = _anti_features(car, ax)
-    wt = car.cog_height * car.mass * ax / car.wheelbase                # N, positive moves load to the rear
+    if not fx.aero_anti_features:
+        anti_f, anti_r = 0.0 * anti_f, 0.0 * anti_r
+    wt = weight_transfer(car, ax)                                      # N, positive moves load to the rear
     q = 0.5 * car.air_density * car.frontal_area * v * v
     frh = np.full(v.shape, car.static_rh_front)
     rrh = np.full(v.shape, car.static_rh_rear)
@@ -467,9 +576,12 @@ def _aero_state_arrays(car, v, ax, ay, iterations=100, yaw=None):
             cx = car.cx_total * (1 + car.aero_sens_roll * roll / 100) * (1 + car.aero_sens_yaw * yaw / 100)
             ab = np.full(v.shape, car.aero_balance_front)
         cz, cx = cz * corr, cx * corr
-        df = q * cz
+        df = q * cz if fx.aero_downforce else 0.0 * q
         new_frh = car.static_rh_front - (ab / 100 * df / 2 + (-wt) * (1 - anti_f) / 2) / kh_f
         new_rrh = car.static_rh_rear - ((1 - ab / 100) * df / 2 + wt * (1 - anti_r) / 2) / kh_r
+        if not fx.aero_ride_height:                    # the suspension does not move the car: static ride height
+            new_frh = np.full(v.shape, float(car.static_rh_front))
+            new_rrh = np.full(v.shape, float(car.static_rh_rear))
         new_frh_c = np.clip(new_frh, lo_f, hi_f)
         new_rrh_c = np.clip(new_rrh, lo_r, hi_r)
         done = np.max(np.abs(new_frh_c - frh)) < 1e-4 and np.max(np.abs(new_rrh_c - rrh)) < 1e-4
@@ -543,6 +655,8 @@ Car._build_aero_table = _build_aero_table
 
 def downforce(car, v, aero=None):
     """Front and rear aero downforce [N] (eq 2-29, 2-30)."""
+    if not car.effects.aero_downforce:
+        return 0.0, 0.0
     cz, ab, _ = aero or aero_coeffs(car, v)
     total = 0.5 * car.air_density * cz * car.frontal_area * v * v
     return total * ab / 100, total * (1 - ab / 100)
@@ -550,12 +664,16 @@ def downforce(car, v, aero=None):
 
 def drag_force(car, v, aero=None):
     """Aero drag [N] (eq 2-35)."""
+    if not car.effects.aero_drag:
+        return 0.0
     cx = (aero or aero_coeffs(car, v))[2]
     return 0.5 * car.air_density * cx * car.frontal_area * v * v
 
 
 def rolling_force(car, v, aero=None):
     """Rolling resistance [N] (eq 2-36)."""
+    if not car.effects.rolling_resistance:
+        return 0.0
     df_front, df_rear = downforce(car, v, aero)
     return car.tire.rolling_resistance * (car.mass * G + df_front + df_rear)
 
@@ -568,6 +686,8 @@ def resistance_force(car, v, aero=None):
 
 def weight_transfer(car, ax):
     """Longitudinal weight transfer [N] (eq 3-8). Positive ax moves load to the rear axle."""
+    if not car.effects.longitudinal_weight_transfer:
+        return 0.0 * ax
     return car.cog_height * car.mass * ax / car.wheelbase
 
 
@@ -588,15 +708,17 @@ def tire_mu(car, fz_axle, axle, direction, braking=False):
     axle is "front" or "rear"; direction is "x" (longitudinal) or "y" (lateral) (eq 2-12 .. 2-15).
     """
     t, corr = car.tire, car.correlation
+    sensitive = car.effects.tire_load_sensitivity
     fz_tire = fz_axle / 2
     if direction == "x":
-        mu = t.mux + t.mux_sens * corr.load_sensitivity * (t.mux_norm_kg * G - fz_tire)
+        mu = t.mux + (t.mux_sens * corr.load_sensitivity * (t.mux_norm_kg * G - fz_tire) if sensitive else 0.0)
         mu *= corr.mux_brake if braking else corr.mux_accel
     elif t.lateral_model == "pacejka":
         table = car._muy_front if axle == "front" else car._muy_rear
-        mu = float(np.interp(fz_tire, car._fz_tire, table)) * corr.muy
+        load = fz_tire if sensitive else car.mass * G / 4       # constant mu: read the table at the average static load
+        mu = float(np.interp(load, car._fz_tire, table)) * corr.muy
     else:
-        mu = (t.muy + t.muy_sens * corr.load_sensitivity * (t.muy_norm_kg * G - fz_tire)) * corr.muy
+        mu = (t.muy + (t.muy_sens * corr.load_sensitivity * (t.muy_norm_kg * G - fz_tire) if sensitive else 0.0)) * corr.muy
     return max(mu, 0.05)
 
 
@@ -617,17 +739,33 @@ def tire_brake_limit(car, v, ax=0.0, aero=None):
     return (tire_mu(car, fz_front, "front", "x", True) * fz_front + tire_mu(car, fz_rear, "rear", "x", True) * fz_rear)
 
 
-def tire_lateral_limit(car, v, aero=None):
-    """Largest lateral force of all four tires [N]. No lateral weight transfer in this model (eq 2-46 .. 2-48)."""
+def _lateral_capacity(car, fz_front, fz_rear, ay=None):
+    """Largest lateral force of the front and the rear axle [N] for axle loads fz_front, fz_rear.
+
+    With effects.lateral_weight_transfer and a lateral acceleration ay [m/s^2] the load moves from the inner to the
+    outer tire of each axle (8.3.2.3) and the two tires are added up, so load sensitivity costs grip. Without it
+    the load is shared equally between the two tires of an axle (eq 2-46 .. 2-48).
+    """
+    if ay is None or not car.effects.lateral_weight_transfer:
+        return tire_mu(car, fz_front, "front", "y") * fz_front, tire_mu(car, fz_rear, "rear", "y") * fz_rear
+    out = []
+    for axle, fz, per_ay in (("front", fz_front, car._lat_wt[0]), ("rear", fz_rear, car._lat_wt[1])):
+        shift = min(per_ay * abs(ay), fz / 2 - 10.0)               # the inner tire keeps at least 10 N
+        out.append(sum(tire_mu(car, 2 * f, axle, "y") * f for f in (fz / 2 + shift, fz / 2 - shift)))
+    return out[0], out[1]
+
+
+def tire_lateral_limit(car, v, aero=None, ay=None):
+    """Largest lateral force of all four tires [N] (eq 2-46 .. 2-48). Give ay [m/s^2] to include the lateral
+    weight transfer when effects.lateral_weight_transfer is on."""
     fz_front, fz_rear = vertical_loads(car, v, 0.0, aero)
-    return tire_mu(car, fz_front, "front", "y") * fz_front + tire_mu(car, fz_rear, "rear", "y") * fz_rear
+    return sum(_lateral_capacity(car, fz_front, fz_rear, ay))
 
 
 def tire_axle_forces(car, v, ax=0.0, ay=0.0, aero=None):
     """Lateral and longitudinal tire force on each axle [N] for the driven channels (FyF, FyR, FxF, FxR)."""
     fz_front, fz_rear = vertical_loads(car, v, ax, aero)
-    mu_y_f, mu_y_r = tire_mu(car, fz_front, "front", "y"), tire_mu(car, fz_rear, "rear", "y")
-    cap_f, cap_r = mu_y_f * fz_front, mu_y_r * fz_rear
+    cap_f, cap_r = _lateral_capacity(car, fz_front, fz_rear, ay)
     # the total lateral force m*ay is shared in proportion to each axle's lateral capacity (neutral steer)
     fy_total = car.mass * abs(ay)
     share_f = cap_f / (cap_f + cap_r)
@@ -756,7 +894,7 @@ def pure_lateral_accel(car, v):
     ay = 0.0
     for _ in range(12):
         aero = aero_coeffs(car, v, 0.0, ay)
-        new = tire_lateral_limit(car, v, aero) / car.mass
+        new = tire_lateral_limit(car, v, aero, ay) / car.mass
         if abs(new - ay) < 1e-4:
             break
         ay = 0.5 * (ay + new) if ay else new
@@ -772,7 +910,7 @@ def apex_lateral_accel(car, v):
     ay = pure_lateral_accel(car, v)
     for _ in range(12):
         aero = aero_coeffs(car, v, 0.0, ay)
-        ay_max = tire_lateral_limit(car, v, aero) / car.mass
+        ay_max = tire_lateral_limit(car, v, aero, ay) / car.mass
         used = min(resistance_force(car, v, aero) / max(tire_accel_limit(car, v, 0.0, aero), 1.0), 1.0)
         new = max(ay_max * math.sqrt(1 - used * used), 1e-3)
         if abs(new - ay) < 1e-4:
@@ -812,7 +950,7 @@ def combined_accel(car, v, radius, ax_prev, accelerating, ay=None, weight_transf
     ay = v * v / radius if ay is None else ay
     ax_loads = ax_prev if weight_transfer_on else 0.0
     aero = aero_coeffs(car, v, ax_loads, ay)
-    ay_max = tire_lateral_limit(car, v, aero) / car.mass
+    ay_max = tire_lateral_limit(car, v, aero, ay) / car.mass
     ratio = min(ay / ay_max, 1.0)
     ellipse = math.sqrt(1 - ratio * ratio)
     resist = resistance_force(car, v, aero) / car.mass
@@ -1981,9 +2119,10 @@ def _ymd_aero(car, v, ay_abs, beta_abs):
     corr = car.correlation.aero
     if car.aero_mode == "constant":
         shape = np.broadcast(v, ay_abs).shape
-        return (np.full(shape, car.cz_total * corr), np.full(shape, car.aero_balance_front), np.full(shape, car.cx_total * corr))
-    out = _aero_state_arrays(car, v, 0.0, ay_abs, yaw=beta_abs)
-    return out[0], out[1], out[2]
+        cz, ab, cx = (np.full(shape, car.cz_total * corr), np.full(shape, car.aero_balance_front), np.full(shape, car.cx_total * corr))
+    else:
+        cz, ab, cx, *_ = _aero_state_arrays(car, v, 0.0, ay_abs, yaw=beta_abs)
+    return (cz if car.effects.aero_downforce else 0.0 * cz), ab, cx
 
 
 def yaw_moment_diagram(car, speed=None, radius=None, delta_range=(-10, 10), beta_range=(-10, 10), step=1.0,
@@ -2029,7 +2168,7 @@ def yaw_moment_diagram(car, speed=None, radius=None, delta_range=(-10, 10), beta
                  "RR": -np.degrees(np.arctan2(vy - r * b_dist, vx + r * rt / 2))}
         fy, mz = {}, {}
         for k in fz:
-            camber = s.camber_front if k[0] == "F" else s.camber_rear
+            camber = car.camber("front" if k[0] == "F" else "rear")
             fy[k] = pacejka_fy(t.a, fz[k] / 1000, alpha[k], camber) * car.correlation.muy
             mz[k] = pacejka_mz(t.c, fz[k] / 1000, alpha[k], camber)
         ay_new = (fy["FL"] + fy["FR"] + fy["RL"] + fy["RR"]) / car.mass
@@ -2360,6 +2499,24 @@ def goal_times(target_points, results=None):
         pts_time = pts - (ENDURANCE_LAPS_POINTS if event == "endurance" else 0)
         rows[event] = {"target points": pts, "needed time [s]": time_for_points(event, pts_time, t_min[event])}
     return pd.DataFrame(rows).T
+
+
+def effects_study(car, run, effects=None):
+    """What is each effect worth? Flip the switches in car.effects one at a time and re-run.
+
+    run(car) returns a number, usually a time, for example
+        lambda c: simulate_lap(c, tracks["endurance"], "flying", channels=False)["time"]
+    effects is a list of Effects field names (default: all). Returns a table with the value of the base car, the value
+    with that one switch flipped, and the change.
+    """
+    base = run(car)
+    rows = {}
+    for name in effects or [f for f in Effects.__dataclass_fields__]:
+        current = getattr(car.effects, name)
+        value = run(with_params(car, **{f"effects.{name}": not current}))
+        rows[name] = {"now": current, "flipped": not current, "base": base, "result when flipped": value,
+                      "change": value - base, "change [%]": 100 * (value - base) / base}
+    return pd.DataFrame(rows).T.rename_axis("effect")
 
 
 def compare_designs(base_car, changes, tracks=None, results=None):
