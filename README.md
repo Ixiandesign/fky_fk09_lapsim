@@ -68,8 +68,7 @@ inputs rather than a switch (shift and clutch delay, throttle lift, camber gain,
 
 ## Placeholders
 
-Everything marked `PLACEHOLDER` in `lapsim.py` is made up: the 18 Pacejka tire parameters `a0 ... a17` (and the aligning moment `c0 ... c17`), the engine
-curve, and the aero map (`AeroMap.placeholder()`). The other defaults are the thesis baseline car (NTUA P19). Replace all of it with FK09 data.
+Everything marked `PLACEHOLDER` in `lapsim.py` is made up: the 18 Pacejka tire parameters `a0 ... a17` (and the aligning moment `c0 ... c17`) and the aero map (`AeroMap.placeholder()`). The other defaults are the thesis baseline car (NTUA P19). Replace all of it with FK09 data.
 
 ## Where the code differs from the thesis
 
@@ -95,3 +94,12 @@ curve, and the aero map (`AeroMap.placeholder()`). The other defaults are the th
   or build a track from GPS or logger data (`track_from_gps`, `track_from_accel_speed`).
 - Sim endurance times are much faster than real ones (no traffic, mistakes, or driver change). Use the correlation factors with real data.
 - Efficiency points are not modelled; `points_2026(..., efficiency=...)` takes a number.
+
+## Engine and endurance pace
+
+- **Engine**: `settings.json` `car.engine_curve` points at `ref/dyno_curves.csv` (6th gear, wheel power, RPM and ft-lb). `load_dyno_curve` smooths it and resamples it every 100 rpm. The
+  torque is referred to engine rpm (wheel power / engine rpm), so it is used in every gear through the real primary, final and gear ratios, and `engine_includes_losses` stops
+  `drivetrain_efficiency` being applied a second time. Below the first dyno point (5.6k rpm) the clutch slips and the first torque value is held.
+- **Endurance pace**: `correlation.endurance_pace` (1.599) multiplies every endurance lap time in `run_all_events`. It was set so endurance places where the sim places in acceleration and autocross
+  (30th / 75 and 36th / 75, about the 43rd percentile; skidpad is left out because the placeholder tires put it 1st), giving 20th of 44 finishers. Lap fade alone is only 1.04 to 1.06, so most of the value
+  covers how far the digitized endurance track and the placeholder data are from reality. Re-set it when they are replaced. `event_placements()` shows where the sim times place in the 2026 field.

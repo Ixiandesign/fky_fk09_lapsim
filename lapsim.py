@@ -24,6 +24,7 @@ Contents (in thesis order)
 """
 import json
 import math
+import re
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -190,6 +191,7 @@ class Correlation:
     mux_brake: float = 1.0        # multiplies longitudinal grip while braking
     muy: float = 1.0              # multiplies lateral grip
     load_sensitivity: float = 1.0 # multiplies the tire load sensitivity (simple model)
+    endurance_pace: float = 1.0   # multiplies every endurance lap time (traffic, driver consistency, heat); set from the 2026 results
 
 
 @dataclass
@@ -244,23 +246,53 @@ def _from_settings(cls, section, name, path):
     return cls(**{k: tuple(v) if isinstance(v, list) else v for k, v in section.items()})
 
 
+def _read_settings(path):
+    """Read settings.json, ignoring // comments to the end of a line (a // inside a string is kept)."""
+    with open(path, encoding="utf8") as f:
+        text = f.read()
+    text = re.sub(r'("(?:[^"\\\n]|\\.)*")|//[^\n]*', lambda m: m.group(1) or "", text)
+    return json.loads(text)
+
+
 def load_effects(path=HERE / "settings.json"):
     """Read the "effects" section of settings.json into an Effects. A value that is not true / false is an error."""
-    with open(path, encoding="utf8") as f:
-        section = json.load(f).get("effects", {})
+    section = _read_settings(path).get("effects", {})
     bad = {k: v for k, v in section.items() if not k.startswith("_") and not isinstance(v, bool)}
     if bad:
         raise ValueError(f"{path}: effects must be true or false, got {bad}")
     return _from_settings(Effects, section, "effects", path)
 
 
+FT_LB_TO_NM = 1.3558179483314
+
+
+def load_dyno_curve(path, smooth_rpm=200.0, step_rpm=100.0):
+    """Read a dyno CSV (columns RPM and Torque [ft-lb]) into (rpm, torque in Nm) tuples for the Car.
+
+    The raw run has thousands of noisy points. It is averaged over a smooth_rpm window and resampled every step_rpm,
+    so the gear-shift search is not fooled by torque ripple (a few points are kept at the ends so the rev-limit
+    cut is not smeared). Torque is taken as referred to engine rpm: the dyno measures power at the wheels and divides by
+    engine speed, so drivetrain losses are already inside it (see Car.engine_includes_losses).
+    """
+    data = pd.read_csv(path)
+    rpm = data.iloc[:, 0].to_numpy(float)
+    torque = data.iloc[:, 1].to_numpy(float) * FT_LB_TO_NM
+    order = np.argsort(rpm)
+    rpm, torque = rpm[order], torque[order]
+    n = max(1, int(round(smooth_rpm / np.median(np.diff(rpm)))))
+    padded = np.pad(torque, n // 2, mode="edge")
+    smooth = np.convolve(padded, np.ones(n) / n, mode="valid")[:len(torque)]
+    grid = np.arange(math.ceil(rpm[0] / step_rpm) * step_rpm, rpm[-1], step_rpm)
+    grid = np.append(grid, rpm[-1])
+    return tuple(float(v) for v in grid), tuple(round(float(v), 3) for v in np.interp(grid, rpm, smooth))
+
+
 def load_car(path=HERE / "settings.json"):
     """Build the whole Car from settings.json: sections "tire", "suspension", "brakes", "correlation", "effects" and "car".
 
-    In "car", aero_map is "placeholder" (the made-up AeroMap), the path of a CSV for AeroMap.from_csv, or null.
+    In "car", engine_curve is the path of a dyno CSV (RPM, Torque [ft-lb]) that replaces engine_rpm / engine_torque, and aero_map is "placeholder" (the made-up AeroMap), the path of a CSV for AeroMap.from_csv, or null.
     """
-    with open(path, encoding="utf8") as f:
-        settings = json.load(f)
+    settings = _read_settings(path)
     unknown = {k for k in settings if not k.startswith("_")} - {"tire", "suspension", "brakes", "correlation", "effects", "car"}
     if unknown:
         raise ValueError(f"{path}: unknown sections {sorted(unknown)}")
@@ -268,6 +300,9 @@ def load_car(path=HERE / "settings.json"):
     for sub in ("tire", "suspension", "brakes", "correlation"):
         if sub in car:
             raise ValueError(f"{path}: put {sub} settings in the \"{sub}\" section, not in \"car\"")
+    curve = car.pop("engine_curve", None)
+    if curve:
+        car["engine_rpm"], car["engine_torque"] = load_dyno_curve(Path(path).parent / curve)
     aero_map = car.pop("aero_map", None)
     if aero_map == "placeholder":
         aero_map = AeroMap.placeholder()
@@ -319,9 +354,10 @@ class Car:
     aero_sens_yaw: float = -0.8          # % CzT per degree of yaw
     aero_map: object = None              # AeroMap (see section 12)
     rh_limit_mm: float = 5.0             # ride height below this is flagged as bottoming
-    # --- engine / drivetrain, Table 2-5. The dyno curve is a PLACEHOLDER ---
+    # --- engine / drivetrain, Table 2-5. settings.json "engine_curve" replaces the rpm / torque points with a dyno run ---
     engine_rpm: tuple = (4500, 5500, 6500, 7500, 8500, 9500, 10500)
-    engine_torque: tuple = (46, 50, 52, 55, 56, 54, 48)   # Nm
+    engine_torque: tuple = (46, 50, 52, 55, 56, 54, 48)   # Nm, referred to engine rpm (placeholder unless a dyno curve is loaded)
+    engine_includes_losses: bool = False  # True = the torque curve was measured at the wheels, so drivetrain_efficiency is not applied again
     engine_scale: float = 1.0
     rpm_idle: float = 2000.0
     thermal_efficiency: float = 0.30
@@ -384,7 +420,8 @@ class Car:
         r = self.tire.radius
         # speed and wheel force of every gear at every rpm point (eq 2-22 .. 2-25)
         self.gear_v = np.outer(1 / self.total_ratio, rpm * 2 * math.pi / 60 * r)
-        self.gear_f = np.outer(self.total_ratio, torque) * self.drivetrain_efficiency / r
+        efficiency = 1.0 if self.engine_includes_losses else self.drivetrain_efficiency
+        self.gear_f = np.outer(self.total_ratio, torque) * efficiency / r
         self.v_grid = np.arange(0.0, self.gear_v.max() + 0.1, 0.1)
         forces = np.zeros((len(self.total_ratio), len(self.v_grid)))
         for g in range(len(self.total_ratio)):
@@ -1653,7 +1690,9 @@ def suspension_rates(car):
     # dynamic pitch centre exactly as printed in the thesis (reproduces Table 5-1)
     pc_dynamic = pcx + pcx * (1 - s.motion_ratio_front ** 2 * k_spring_f / (k_spring_r * s.motion_ratio_rear ** 2))
     # roll (eq 5-6 .. 5-10)
-    kw_arb_f, kw_arb_r = s.arb_front / s.motion_ratio_arb_front ** 2, s.arb_rear / s.motion_ratio_arb_rear ** 2
+    # an axle without an ARB (rate 0, motion ratio 0) just has no bar
+    kw_arb_f = s.arb_front / s.motion_ratio_arb_front ** 2 if s.motion_ratio_arb_front else 0.0
+    kw_arb_r = s.arb_rear / s.motion_ratio_arb_rear ** 2 if s.motion_ratio_arb_rear else 0.0
     series = lambda a, b: a * b / (a + b)
     k_roll_f = math.pi * car.front_track ** 2 / 360 * series(kw_f + kw_arb_f, kt_f)
     k_roll_r = math.pi * car.rear_track ** 2 / 360 * series(kw_r + kw_arb_r, kt_r)
@@ -2375,10 +2414,12 @@ def run_all_events(car, tracks=None, weight_transfer_on=True):
     """Run the four dynamic events. Returns {event: result dict} (each has "time" in seconds).
 
     acceleration: 75 m standing start       skidpad: one lap of the 9.125 m circle
-    autocross   : one standing-start run    endurance: standing first lap, then flying laps for 22 km
+    autocross   : one standing-start run    endurance: standing first lap, then flying laps for 22 km,
+                  all multiplied by correlation.endurance_pace (the sim lap is flat out, real endurance laps are not)
     """
     tracks = tracks or load_default_tracks()
     endurance = tracks["endurance"]
+    pace = car.correlation.endurance_pace       # real endurance laps are slower than a flat-out sim lap
     first = simulate_lap(car, endurance, "standing", weight_transfer_on=weight_transfer_on, channels=False)
     flying = simulate_lap(car, endurance, "flying", weight_transfer_on=weight_transfer_on, channels=False)
     laps = 22000.0 / endurance.length
@@ -2386,8 +2427,9 @@ def run_all_events(car, tracks=None, weight_transfer_on=True):
         "acceleration": run_acceleration(car, distance=75.0, weight_transfer_on=weight_transfer_on),
         "skidpad": run_cornering(car, radius=9.125, rotation=360.0),
         "autocross": simulate_lap(car, tracks["autocross"], "standing", weight_transfer_on=weight_transfer_on, channels=False),
-        "endurance": {"time": first["time"] + (laps - 1) * flying["time"], "laps": laps,
-                      "first_lap": first["time"], "flying_lap": flying["time"]},
+        "endurance": {"time": pace * (first["time"] + (laps - 1) * flying["time"]), "laps": laps,
+                      "first_lap": pace * first["time"], "flying_lap": pace * flying["time"],
+                      "ideal_time": first["time"] + (laps - 1) * flying["time"], "pace_factor": pace},
     }
 
 
@@ -2421,6 +2463,20 @@ def field_best_times(results):
         "autocross": best(results["autocross"], "BestTime"),
         "endurance": best(results["endurance"], "AdjustedTime"),
     }
+
+
+def event_placements(events, results=None):
+    """Where the simulated event times would place in the 2026 field. Returns a table: rank, field size, percentile (0 = best)."""
+    results = results or load_results()
+    columns = {"acceleration": ("acceleration", "BestTime"), "skidpad": ("skidpad", "BestTime"),
+               "autocross": ("autocross", "BestTime"), "endurance": ("endurance", "AdjustedTime")}
+    rows = {}
+    for event, (table, column) in columns.items():
+        times = pd.to_numeric(results[table][column], errors="coerce").dropna()
+        t = events[event]["time"] if isinstance(events[event], dict) else events[event]
+        rank = int((times < t).sum()) + 1
+        rows[event] = {"sim time [s]": t, "rank": rank, "field": len(times) + 1, "percentile": (rank - 1) / len(times)}
+    return pd.DataFrame(rows).T
 
 
 def event_points(event, time, t_min, cap=True):

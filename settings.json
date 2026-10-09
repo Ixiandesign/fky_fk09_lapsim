@@ -1,126 +1,129 @@
 {
-  "_note": "Edit the numbers, then re-run the settings cell in lapsim.ipynb. SI units (kg, m, N) unless the name says otherwise. Names starting with _ are ignored. Field meanings and units: see the dataclasses at the top of lapsim.py. Delete a line to use the default.",
+  "_note": "Sign convention: left turn, left steer, left yaw and left lateral acceleration are positive; accelerating ax is positive, braking ax is negative; heights are positive up. Edit the numbers, then re-run the settings cell in lapsim.ipynb. SI units (kg, m, N) unless the name says otherwise. Names starting with _ are ignored. // comments are ignored. Field meanings and units: see the dataclasses at the top of lapsim.py. Delete a line to use the default.",
   "tire": {
-    "radius": 0.199,
-    "rolling_resistance": 0.03,
-    "mux": 1.2,
-    "mux_norm_kg": 50.0,
-    "mux_sens": 0.0001,
-    "muy": 1.45,
-    "muy_norm_kg": 50.0,
-    "muy_sens": 0.0001,
-    "lateral_model": "pacejka",
-    "cornering_stiffness_front": 1381.0,
-    "cornering_stiffness_rear": 1421.0,
-    "a": [1.5, -100.0, 1600.0, 1000.0, 1.5, 0.02, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.003, 0.0, 0.0],
-    "c": [2.4, 0.0, -50.0, 0.0, -30.0, 0.0, 0.0, 0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    "radius": 0.199,                       // m, loaded tire radius
+    "rolling_resistance": 0.03,            // rolling resistance coefficient (positive number, opposes motion)
+    "mux": 1.2,                            // longitudinal friction coefficient
+    "mux_norm_kg": 50.0,                   // kg, tire load where mux was measured
+    "mux_sens": 0.0001,                    // mux loss per N of extra load (positive = grip drops as load rises)
+    "muy": 1.45,                           // lateral friction coefficient (simple model)
+    "muy_norm_kg": 50.0,                   // kg, tire load where muy was measured
+    "muy_sens": 0.0001,                    // muy loss per N of extra load (positive = grip drops as load rises)
+    "lateral_model": "pacejka",            // "pacejka" or "simple"
+    "cornering_stiffness_front": 1381.0,   // N/deg, front axle (positive number)
+    "cornering_stiffness_rear": 1421.0,    // N/deg, rear axle (positive number)
+    "a": [1.5, -100.0, 1600.0, 1000.0, 1.5, 0.02, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.003, 0.0, 0.0],   // Pacejka lateral force a0..a17 (Fz in kN, slip angle and camber in deg)
+    "c": [2.4, 0.0, -50.0, 0.0, -30.0, 0.0, 0.0, 0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]            // Pacejka self-aligning moment c0..c17 (Fz in kN, slip angle and camber in deg)
   },
   "suspension": {
-    "toe_front": 0.0,
-    "camber_front": 0.0,
-    "camber_rear": 0.0,
-    "roll_centre_front": 0.0295,
-    "roll_centre_rear": 0.069,
-    "roll_gradient": 0.65,
-    "use_computed_roll_gradient": true,
-    "ackermann_ratio": 1.0,
-    "motion_ratio_front": 1.08,
-    "motion_ratio_rear": 1.06,
-    "spring_front_lbs_in": 350.0,
-    "spring_rear_lbs_in": 150.0,
-    "tire_stiffness_front": 95000.0,
-    "tire_stiffness_rear": 95000.0,
-    "arb_front": 36450.0,
-    "arb_rear": 115710.0,
-    "motion_ratio_arb_front": 1.07,
-    "motion_ratio_arb_rear": 1.56,
-    "knee_speed_mm_s": 12.0,
-    "zeta_front_ls": 4.0,
-    "zeta_rear_ls": 3.2,
-    "comp_reb_ls": 1.5,
-    "zeta_front_hs": 0.9,
-    "zeta_rear_hs": 0.8,
-    "comp_reb_hs": 0.5,
-    "anti_dive": 30.3,
-    "anti_lift_rear": 13.5,
-    "anti_lift_front": 0.0,
-    "anti_squat": 20.0
+    "toe_front": 1.0,                      // deg, static toe (positive = toe-out, negative = toe-in, same on both wheels)
+    "camber_front": -2.0,                   // deg, static camber (negative = top of wheel tilted in, SAE; fed straight into Pacejka)
+    "camber_rear": -2.0,                    // deg, static camber (negative = top of wheel tilted in, SAE)
+    "roll_centre_front": 0.02667,           // m, roll centre height (positive = above ground)
+    "roll_centre_rear": 0.03302,             // m, roll centre height (positive = above ground)
+    "roll_gradient": 0.65,                 // deg/g, used if computed one is off (positive number = body rolls outward)
+    "use_computed_roll_gradient": true,    // true = calculate roll gradient from spring/ARB rates
+    "ackermann_ratio": 1.0,                // outer / inner steer angle (1 = parallel steer, >1 = outer wheel steers more)
+    "motion_ratio_front": 1.08,            // wheel / spring
+    "motion_ratio_rear": 1.0,             // wheel / spring
+    "spring_front_lbs_in": 350.0,          // lbs/in, per corner
+    "spring_rear_lbs_in": 350.0,           // lbs/in, per corner
+    "tire_stiffness_front": 95000.0,       // N/m, per corner
+    "tire_stiffness_rear": 95000.0,        // N/m, per corner
+    "arb_front": 36450.0,                  // N/m, anti-roll bar rate
+    "arb_rear": 0.0,                  // N/m, anti-roll bar rate
+    "motion_ratio_arb_front": 1.07,        // ARB wheel / bar motion
+    "motion_ratio_arb_rear": 0.0,         // ARB wheel / bar motion
+    "knee_speed_mm_s": 12.0,               // mm/s, damper low/high speed switch
+    "zeta_front_ls": 4.0,                  // damping ratio, low speed
+    "zeta_rear_ls": 3.2,                   // damping ratio, low speed
+    "comp_reb_ls": 1.5,                    // compression / rebound, low speed
+    "zeta_front_hs": 0.9,                  // damping ratio, high speed
+    "zeta_rear_hs": 0.8,                   // damping ratio, high speed
+    "comp_reb_hs": 0.5,                    // compression / rebound, high speed
+    "anti_dive": 15.0,                     // %, front, braking (positive = share taken by suspension links, 0-100)
+    "anti_lift_rear": 0.0,                // %, rear, braking (positive = share taken by suspension links, 0-100)
+    "anti_lift_front": 0.0,                // %, front, accelerating (positive = share taken by suspension links, 0-100)
+    "anti_squat": 7.5                     // %, rear, accelerating (positive = share taken by suspension links, 0-100)
   },
   "brakes": {
-    "bias_front": 60.0,
-    "disc_diameter_front": 0.185,
-    "disc_diameter_rear": 0.174,
-    "pad_height_front": 0.04,
-    "pad_height_rear": 0.04,
-    "pad_mu_front": 0.45,
-    "pad_mu_rear": 0.45,
-    "pistons_front": 4,
-    "pistons_rear": 2,
-    "piston_diameter_front": 0.025,
-    "piston_diameter_rear": 0.025
+    "bias_front": 65.0,                    // % of brake force on front
+    "disc_diameter_front": 0.185,          // m
+    "disc_diameter_rear": 0.174,           // m
+    "pad_height_front": 0.04,              // m
+    "pad_height_rear": 0.04,               // m
+    "pad_mu_front": 0.45,                  // pad friction coefficient
+    "pad_mu_rear": 0.45,                   // pad friction coefficient
+    "pistons_front": 4,                    // pistons per caliper
+    "pistons_rear": 2,                     // pistons per caliper
+    "piston_diameter_front": 0.025,        // m
+    "piston_diameter_rear": 0.025          // m
   },
-  "correlation": {
-    "engine_power": 1.0,
-    "aero": 1.0,
-    "mux_accel": 1.0,
-    "mux_brake": 1.0,
-    "muy": 1.0,
-    "load_sensitivity": 1.0
+  "correlation": {                         // multipliers to match the real car, 1 = no change
+    "engine_power": 1.0,                   // x engine torque
+    "aero": 1.0,                           // x downforce and drag
+    "mux_accel": 1.0,                      // x longitudinal grip, accelerating
+    "mux_brake": 1.0,                      // x longitudinal grip, braking
+    "muy": 1.0,                            // x lateral grip
+    "load_sensitivity": 1.0,               // x tire load sensitivity
+    "endurance_pace": 1.599                // x every endurance lap time; set so endurance places (20th of 44 finishers) where the sim places in acceleration and autocross (about the 43rd percentile of the 2026 field)
   },
-  "effects": {
-    "aero_ride_height": true,
-    "aero_anti_features": true,
-    "aero_roll": true,
-    "aero_yaw": true,
-    "aero_downforce": true,
-    "aero_drag": true,
-    "rolling_resistance": true,
-    "longitudinal_weight_transfer": true,
-    "lateral_weight_transfer": false,
-    "tire_load_sensitivity": true,
-    "tire_camber": true
+  "effects": {                             // true = effect modelled, false = ignored
+    "aero_ride_height": true,              // ride height moves with load (else static)
+    "aero_anti_features": true,            // anti-dive/lift/squat take part of weight transfer
+    "aero_roll": true,                     // body roll changes aero
+    "aero_yaw": true,                      // yaw (side slip) changes aero
+    "aero_downforce": true,                // car makes downforce
+    "aero_drag": true,                     // car makes aero drag
+    "rolling_resistance": true,            // tires have rolling resistance
+    "longitudinal_weight_transfer": true,  // load shifts front/rear under accel/braking
+    "lateral_weight_transfer": false,      // load shifts left/right in corners
+    "tire_load_sensitivity": true,         // grip changes with tire load
+    "tire_camber": true                    // camber changes Pacejka grip
   },
   "car": {
-    "mass": 250.0,
-    "weight_dist_front": 49.0,
-    "weight_dist_left": 50.0,
-    "wheelbase": 1.53,
-    "front_track": 1.238,
-    "rear_track": 1.15,
-    "cog_height": 0.33,
-    "drive": "RWD",
-    "steer_ratio": 3.74,
-    "mass_nsm_front": 20.0,
-    "mass_nsm_rear": 22.0,
-    "cog_nsm_front": 0.26,
-    "cog_nsm_rear": 0.28,
-    "cog_sm": 0.324,
-    "izz": 80.0,
-    "ixx": 15.0,
-    "iyy": 60.0,
-    "pitch_centre_x": 0.931,
-    "aero_mode": "constant",
-    "cz_total": 4.5,
-    "cx_total": 1.75,
-    "frontal_area": 1.0,
-    "aero_balance_front": 45.0,
-    "air_density": 1.225,
-    "static_rh_front": 35.0,
-    "static_rh_rear": 45.0,
-    "aero_sens_roll": -5.0,
-    "aero_sens_yaw": -0.8,
-    "rh_limit_mm": 5.0,
-    "engine_rpm": [4500, 5500, 6500, 7500, 8500, 9500, 10500],
-    "engine_torque": [46, 50, 52, 55, 56, 54, 48],
-    "engine_scale": 1.0,
-    "rpm_idle": 2000.0,
-    "thermal_efficiency": 0.3,
-    "fuel_heating_value": 47200000.0,
-    "drivetrain_efficiency": 0.9,
-    "primary_ratio": 1.0,
-    "final_ratio": 3.6,
-    "gear_ratios": [4.51, 3.23, 2.49, 2.03, 1.71, 1.49],
-    "aero_map": "placeholder",
+    "mass": 250.0,                         // kg, including driver
+    "weight_dist_front": 49.0,             // % on front axle
+    "weight_dist_left": 50.0,              // % on left side (>50 = left side heavier)
+    "wheelbase": 1.53,                     // m
+    "front_track": 1.238,                  // m
+    "rear_track": 1.15,                    // m
+    "cog_height": 0.33,                    // m, whole car (positive = above ground)
+    "drive": "RWD",                        // "RWD", "FWD" or "AWD"
+    "steer_ratio": 3.74,                   // steering wheel / front wheels
+    "mass_nsm_front": 20.0,                // kg, front unsprung mass
+    "mass_nsm_rear": 22.0,                 // kg, rear unsprung mass
+    "cog_nsm_front": 0.26,                 // m, front unsprung CoG height (positive = above ground)
+    "cog_nsm_rear": 0.28,                  // m, rear unsprung CoG height (positive = above ground)
+    "cog_sm": 0.324,                       // m, sprung mass CoG height (positive = above ground)
+    "izz": 80.0,                           // kg m^2, yaw inertia
+    "ixx": 15.0,                           // kg m^2, roll inertia
+    "iyy": 60.0,                           // kg m^2, pitch inertia
+    "pitch_centre_x": 0.931,               // m, front axle to pitch centre (positive = rearward of front axle)
+    "aero_mode": "constant",               // "constant", "sensitivity" or "map"
+    "cz_total": 4.5,                       // total downforce coefficient (positive number = pushes car down)
+    "cx_total": 1.75,                      // total drag coefficient (positive number = opposes motion)
+    "frontal_area": 1.0,                   // m^2
+    "aero_balance_front": 45.0,            // % of downforce on front
+    "air_density": 1.225,                  // kg/m^3
+    "static_rh_front": 35.0,               // mm, static ride height (positive = clearance above ground)
+    "static_rh_rear": 45.0,                // mm, static ride height (positive = clearance above ground)
+    "aero_sens_roll": -5.0,                // % downforce per deg roll (sensitivity mode) (negative = downforce drops as roll grows)
+    "aero_sens_yaw": -0.8,                 // % downforce per deg yaw (sensitivity mode) (negative = downforce drops as yaw grows)
+    "rh_limit_mm": 5.0,                    // mm, below this = bottoming
+    "engine_curve": "ref/dyno_curves.csv", // dyno CSV (RPM, Torque [ft-lb], 6th gear at the wheels): smoothed and used instead of engine_rpm / engine_torque; null = use those
+    "engine_rpm": [4500, 5500, 6500, 7500, 8500, 9500, 10500],   // rpm points of torque curve (only used if engine_curve is null)
+    "engine_torque": [46, 50, 52, 55, 56, 54, 48],               // Nm at each rpm (only used if engine_curve is null)
+    "engine_includes_losses": true,        // true = torque curve already includes drivetrain losses (measured at the wheels), so drivetrain_efficiency is not applied to it
+    "engine_scale": 1.0,                   // x engine torque
+    "rpm_idle": 2000.0,                    // rpm
+    "thermal_efficiency": 0.3,             // fuel energy to work
+    "fuel_heating_value": 47200000.0,      // J/kg
+    "drivetrain_efficiency": 0.9,          // engine to wheel
+    "primary_ratio": 2.11111111,           // engine to gearbox (38/18)
+    "final_ratio": 3.81818182,             // chain/final drive (42/11)
+    "gear_ratios": [2.75, 2.0, 1.67, 1.44, 1.30434, 1.2083],     // 1st to 6th
+    "aero_map": "placeholder",             // "placeholder", CSV path, or null (used in "map" mode)
     "_aero_map": "\"placeholder\" (made-up map), a path to a CSV (columns frh, rrh, roll, yaw, czt, ab, cx), or null. Used when aero_mode is \"map\"."
   }
 }
